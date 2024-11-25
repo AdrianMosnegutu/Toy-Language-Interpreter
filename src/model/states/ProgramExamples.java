@@ -221,11 +221,16 @@ public final class ProgramExamples {
                                                                 "v",
                                                                 new ValueExpression(
                                                                         new IntValue(40))),
-                                                        new PrintStatement(
-                                                                new ReadHeapExpression(
+                                                        new CompoundStatement(
+                                                                new AllocateHeapStatement(
+                                                                        "v",
+                                                                        new ValueExpression(
+                                                                                new IntValue(50))),
+                                                                new PrintStatement(
                                                                         new ReadHeapExpression(
-                                                                                new VariableExpression(
-                                                                                        "a"))))))))));
+                                                                                new ReadHeapExpression(
+                                                                                        new VariableExpression(
+                                                                                                "a")))))))))));
     }
 
     public static IStatement whileStatementExample() {
@@ -236,15 +241,21 @@ public final class ProgramExamples {
                         new CompoundStatement(
                                 new WhileStatement(
                                         new RelationalExpression(
-                                                new VariableExpression("v"),
-                                                new ValueExpression(new IntValue(0)),
+                                                new VariableExpression(
+                                                        "v"),
+                                                new ValueExpression(
+                                                        new IntValue(0)),
                                                 ArithmeticRelation.GREATER_THAN),
                                         new CompoundStatement(
-                                                new PrintStatement(new VariableExpression("v")),
+                                                new PrintStatement(
+                                                        new VariableExpression(
+                                                                "v")),
                                                 new AssignStatement("v",
                                                         new ArithmeticExpression(
-                                                                new VariableExpression("v"),
-                                                                new ValueExpression(new IntValue(1)),
+                                                                new VariableExpression(
+                                                                        "v"),
+                                                                new ValueExpression(
+                                                                        new IntValue(1)),
                                                                 ArithmeticOperation.SUBTRACTION)))),
                                 new PrintStatement(new VariableExpression("v")))));
     }

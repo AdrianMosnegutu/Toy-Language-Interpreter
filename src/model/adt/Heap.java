@@ -49,6 +49,13 @@ public class Heap implements IHeap {
 
     @Override
     public int allocate(IValue value) {
+        for (int d = 1; d <= currentFreeAddress; ++d) {
+            if (!map.containsKey(d)) {
+                currentFreeAddress = d;
+                break;
+            }
+        }
+
         map.put(currentFreeAddress, value);
         return currentFreeAddress++;
     }
