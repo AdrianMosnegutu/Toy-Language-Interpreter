@@ -1,6 +1,5 @@
 package model.adt;
 
-import java.util.Map;
 import java.util.Set;
 
 import exceptions.NullReferenceException;
@@ -24,24 +23,6 @@ public interface IHeap {
      * @throws NullReferenceException if the address does not exist in the heap
      */
     void setValueAt(int address, IValue newValue) throws NullReferenceException;
-
-    /**
-     * Sets the content of the heap with the provided map.
-     *
-     * @param content a map containing the new content for the heap, where the keys
-     *                are integers representing addresses and the values are IValue
-     *                instances stored at those addresses
-     */
-    void setContent(Map<Integer, IValue> content);
-
-    /**
-     * Retrieves the entire content of the heap.
-     *
-     * @return a map containing the heap's content, where the keys are the heap
-     *         addresses (integers) and the values are the corresponding values
-     *         stored at those addresses.
-     */
-    Map<Integer, IValue> getContent();
 
     /**
      * Retrieves a list of addresses currently stored in the heap.

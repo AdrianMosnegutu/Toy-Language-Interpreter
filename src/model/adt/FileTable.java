@@ -3,7 +3,6 @@ package model.adt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import exceptions.UndefinedFileException;
@@ -27,11 +26,6 @@ public class FileTable implements IFileTable {
     @Override
     public void setFile(StringValue fileName, BufferedReader file) {
         map.put(fileName, file);
-    }
-
-    @Override
-    public HashSet<StringValue> getOpenFiles() {
-        return new HashSet<>(map.keySet());
     }
 
     @Override

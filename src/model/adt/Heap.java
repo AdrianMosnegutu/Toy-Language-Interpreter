@@ -33,27 +33,14 @@ public class Heap implements IHeap {
     }
 
     @Override
-    public void setContent(Map<Integer, IValue> content) {
-        this.map = content;
-    }
-
-    @Override
-    public Map<Integer, IValue> getContent() {
-        return new HashMap<>(map);
-    }
-
-    @Override
     public Set<Integer> getAddresses() {
         return new HashSet<>(map.keySet());
     }
 
     @Override
     public int allocate(IValue value) {
-        for (int d = 1; d <= currentFreeAddress; ++d) {
-            if (!map.containsKey(d)) {
-                currentFreeAddress = d;
-                break;
-            }
+        while (map.containsKey(currentFreeAddress)) {
+            currentFreeAddress++;
         }
 
         map.put(currentFreeAddress, value);
@@ -65,6 +52,8 @@ public class Heap implements IHeap {
         if (!map.containsKey(address)) {
             throw new NullReferenceException(address);
         }
+
+        currentFreeAddress = address;
         map.remove(address);
     }
 

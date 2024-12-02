@@ -16,13 +16,13 @@ public class Repository implements IRepository {
     private String logFilePath = "program_state.log";
     private final List<ProgramState> programThreads;
 
-    public Repository(ProgramState initialState) {
+    public Repository(ProgramState mainState) {
         this.programThreads = new ArrayList<>();
-        this.programThreads.add(initialState);
+        this.programThreads.add(mainState);
     }
 
-    public Repository(ProgramState initialState, String fileName) {
-        this(initialState);
+    public Repository(ProgramState mainState, String fileName) {
+        this(mainState);
         this.logFilePath = fileName;
     }
 

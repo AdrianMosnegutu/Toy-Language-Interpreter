@@ -1,7 +1,6 @@
 package model.adt;
 
 import java.io.BufferedReader;
-import java.util.HashSet;
 
 import exceptions.UndefinedFileException;
 import model.values.StringValue;
@@ -27,14 +26,6 @@ public interface IFileTable {
      *                 name
      */
     void setFile(StringValue fileName, BufferedReader file);
-
-    /**
-     * Retrieves the set of currently open files.
-     *
-     * @return a HashSet containing the StringValue representations of the open
-     *         files.
-     */
-    HashSet<StringValue> getOpenFiles();
 
     /**
      * Checks if the file represented by the given StringValue is currently open.

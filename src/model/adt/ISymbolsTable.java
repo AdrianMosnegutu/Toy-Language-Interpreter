@@ -1,6 +1,5 @@
 package model.adt;
 
-import java.util.Map;
 import java.util.Set;
 
 import exceptions.UndefinedVariableException;
@@ -31,15 +30,6 @@ public interface ISymbolsTable {
      * @return a Set containing the names of all variables.
      */
     Set<String> getVariableNames();
-
-    /**
-     * Retrieves the entire content of the symbols table.
-     *
-     * @return a map containing all the entries in the symbols table, where the keys
-     *         are variable names and the values are the corresponding IValue
-     *         instances.
-     */
-    Map<String, IValue> getContent();
 
     /**
      * Checks if a variable is defined in the symbol table.

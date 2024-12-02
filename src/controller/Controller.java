@@ -1,12 +1,12 @@
 package controller;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 import exceptions.MyException;
+import exceptions.NullReferenceException;
+import model.adt.IHeap;
+import model.adt.ISymbolsTable;
 import model.statements.IStatement;
 import model.states.ProgramState;
 import model.values.IValue;
@@ -17,39 +17,42 @@ import repository.Repository;
 public class Controller implements IController {
     private final IRepository repository;
 
-    public Controller(ProgramState initialState) {
-        repository = new Repository(initialState);
+    public Controller(ProgramState mainState) {
+        repository = new Repository(mainState);
     }
 
-    public Controller(ProgramState initialState, String logFilePath) {
-        repository = new Repository(initialState, logFilePath);
+    public Controller(ProgramState mainState, String logFilePath) {
+        repository = new Repository(mainState, logFilePath);
     }
 
-    private Set<Integer> getAddressesInUse(Collection<IValue> symbolsTableValues, Map<Integer, IValue> heapContent) {
-        Set<Integer> addressesInUse = new HashSet<>();
+    private Set<Integer> getUnusedAddresses(ISymbolsTable symbolsTable, IHeap heap) {
+        Set<Integer> addressesNotInUse = heap.getAddresses();
 
-        symbolsTableValues.stream().forEach(value -> {
-            while (value instanceof RefValue) {
-                addressesInUse.add(((RefValue) value).getAddress());
-                value = heapContent.get(((RefValue) value).getAddress());
+        Consumer<String> removeAddressesInUse = (variableName) -> {
+            try {
+                IValue value = symbolsTable.getVariableValue(variableName);
+                while (value instanceof RefValue) {
+                    addressesNotInUse.remove(((RefValue) value).getAddress());
+                    value = heap.getValueAt(((RefValue) value).getAddress());
+                }
+            } catch (MyException err) {
+
             }
-        });
+        };
 
-        return addressesInUse;
-    }
-
-    private Map<Integer, IValue> garbageFreeHeap(Set<Integer> addressesInUse, Map<Integer, IValue> heapContent) {
-        return heapContent.entrySet().stream()
-                .filter(entry -> addressesInUse.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        symbolsTable.getVariableNames().stream().forEach(removeAddressesInUse);
+        return addressesNotInUse;
     }
 
     private void executeGarbageCollector(ProgramState program) {
-        Map<String, IValue> symbolsTableContent = program.getSymbolsTable().getContent();
-        Map<Integer, IValue> heapContent = program.getHeap().getContent();
+        Consumer<Integer> deallocateAddress = (address) -> {
+            try {
+                program.getHeap().deallocate(address);
+            } catch (NullReferenceException e) {
+            }
+        };
 
-        Set<Integer> addressesInUse = getAddressesInUse(symbolsTableContent.values(), heapContent);
-        program.getHeap().setContent(garbageFreeHeap(addressesInUse, heapContent));
+        getUnusedAddresses(program.getSymbolsTable(), program.getHeap()).stream().forEach(deallocateAddress);
     }
 
     @Override
@@ -82,7 +85,10 @@ public class Controller implements IController {
     @Override
     public String getOutputLog() throws MyException {
         StringBuilder builder = new StringBuilder("Output log:\n");
-        repository.getCurrentProgram().getOutput().getContent().stream().forEach(value -> builder.append(value + "\n"));
+
+        repository.getCurrentProgram().getOutput().getContent().stream()
+                .forEach((value) -> builder.append(value + "\n"));
+
         return builder.toString();
     }
 }

@@ -34,11 +34,6 @@ public class SymbolsTable implements ISymbolsTable {
     }
 
     @Override
-    public Map<String, IValue> getContent() {
-        return new HashMap<>(map);
-    }
-
-    @Override
     public boolean isVariableDefined(String variableName) {
         return map.containsKey(variableName);
     }

@@ -3,7 +3,6 @@ package model.adt;
 import java.util.ArrayList;
 import java.util.List;
 
-import exceptions.InvalidIndexException;
 import model.values.IValue;
 
 public class OutputList implements IOutputList {
@@ -16,14 +15,6 @@ public class OutputList implements IOutputList {
     @Override
     public void addValue(IValue item) {
         list.add(item);
-    }
-
-    @Override
-    public IValue getValue(int index) throws InvalidIndexException {
-        if (index < 0 || index >= list.size()) {
-            throw new InvalidIndexException();
-        }
-        return list.get(index);
     }
 
     @Override
