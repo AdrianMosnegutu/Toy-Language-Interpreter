@@ -15,6 +15,10 @@ public class SymbolsTable implements ISymbolsTable {
         map = new HashMap<>();
     }
 
+    public SymbolsTable(Map<String, IValue> map) {
+        this.map = map;
+    }
+
     @Override
     public IValue getVariableValue(String variableName) throws UndefinedVariableException {
         if (!map.containsKey(variableName)) {
@@ -44,6 +48,11 @@ public class SymbolsTable implements ISymbolsTable {
             throw new UndefinedVariableException(variableName);
         }
         map.remove(variableName);
+    }
+
+    @Override
+    public SymbolsTable deepCopy() {
+        return new SymbolsTable(new HashMap<>(map));
     }
 
     @Override

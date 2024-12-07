@@ -11,6 +11,7 @@ import model.statements.AllocateHeapStatement;
 import model.statements.AssignStatement;
 import model.statements.CloseReadFileStatement;
 import model.statements.CompoundStatement;
+import model.statements.ForkStatement;
 import model.statements.IStatement;
 import model.statements.IfStatement;
 import model.statements.OpenReadFileStatement;
@@ -258,5 +259,34 @@ public final class ProgramExamples {
                                                                         new IntValue(1)),
                                                                 ArithmeticOperation.SUBTRACTION)))),
                                 new PrintStatement(new VariableExpression("v")))));
+    }
+
+    public static IStatement forkStatementExample() {
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new IntType(), "v"),
+                new CompoundStatement(
+                        new VariableDeclarationStatement(new RefType(new IntType()), "a"),
+                        new CompoundStatement(
+                                new AssignStatement("v", new ValueExpression(new IntValue(10))),
+                                new CompoundStatement(
+                                        new AllocateHeapStatement("a", new ValueExpression(new IntValue(22))),
+                                        new CompoundStatement(
+                                                new ForkStatement(new CompoundStatement(
+                                                        new WriteHeapStatement("a",
+                                                                new ValueExpression(new IntValue(30))),
+                                                        new CompoundStatement(
+                                                                new AssignStatement("v",
+                                                                        new ValueExpression(new IntValue(32))),
+                                                                new CompoundStatement(
+                                                                        new PrintStatement(new VariableExpression("v")),
+                                                                        new PrintStatement(new ReadHeapExpression(
+                                                                                new VariableExpression("a"))))))),
+                                                new CompoundStatement(
+                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new CompoundStatement(
+                                                                new AssignStatement("v",
+                                                                        new ValueExpression(new IntValue(40))),
+                                                                new PrintStatement(new ReadHeapExpression(
+                                                                        new VariableExpression("a"))))))))));
     }
 }

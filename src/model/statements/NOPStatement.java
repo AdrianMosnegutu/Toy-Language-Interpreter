@@ -6,7 +6,7 @@ import model.states.ProgramState;
 public class NOPStatement implements IStatement {
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
-        return state;
+        return null;
     }
 
     @Override

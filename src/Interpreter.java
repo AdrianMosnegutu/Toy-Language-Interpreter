@@ -23,6 +23,7 @@ public class Interpreter {
         menu.addCommand(runWriteToHeapExample());
         menu.addCommand(runGarbageCollectorExample());
         menu.addCommand(runWhileStatementExample());
+        menu.addCommand(runForkStatementExample());
 
         menu.show();
     }
@@ -97,5 +98,13 @@ public class Interpreter {
         IController controller = new Controller(program, LOG_DIR + "whileStatement.log");
 
         return new RunExampleCommand("9", "Use the while statement", controller);
+    }
+
+    private static RunExampleCommand runForkStatementExample() {
+        IStatement statement = ProgramExamples.forkStatementExample();
+        ProgramState program = new ProgramState(statement);
+        IController controller = new Controller(program, LOG_DIR + "forkStatement.log");
+
+        return new RunExampleCommand("10", "Use the fork statement", controller);
     }
 }

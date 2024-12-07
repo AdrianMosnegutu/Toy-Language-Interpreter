@@ -65,7 +65,7 @@ public class ReadFileStatement implements IStatement {
             throw new FileException(e.getMessage());
         }
 
-        return state;
+        return null;
     }
 
     @Override

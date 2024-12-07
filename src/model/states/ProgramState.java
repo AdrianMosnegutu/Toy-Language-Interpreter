@@ -1,5 +1,7 @@
 package model.states;
 
+import exceptions.EmptyStackException;
+import exceptions.MyException;
 import model.adt.ExecutionStack;
 import model.adt.FileTable;
 import model.adt.Heap;
@@ -19,17 +21,34 @@ public class ProgramState {
     private final IFileTable fileTable;
     private final IHeap heap;
 
-    public ProgramState() {
+    private static int id = 0;
+    private int programId;
+
+    public ProgramState(IStatement initialProgram) {
         executionStack = new ExecutionStack();
         symbolsTable = new SymbolsTable();
         output = new OutputList();
         fileTable = new FileTable();
         heap = new Heap();
+        executionStack.push(initialProgram);
+
+        programId = getId();
     }
 
-    public ProgramState(IStatement originalProgram) {
-        this();
-        executionStack.push(originalProgram);
+    public ProgramState(
+            ISymbolsTable symbolsTable,
+            IOutputList output,
+            IFileTable fileTable,
+            IHeap heap,
+            IStatement initialProgram) {
+        executionStack = new ExecutionStack();
+        this.symbolsTable = symbolsTable;
+        this.output = output;
+        this.fileTable = fileTable;
+        this.heap = heap;
+        executionStack.push(initialProgram);
+
+        programId = getId();
     }
 
     public IExecutionStack getExecutionStack() {
@@ -52,11 +71,28 @@ public class ProgramState {
         return heap;
     }
 
+    public static synchronized int getId() {
+        return ++id;
+    }
+
+    public Boolean isCompleted() {
+        return executionStack.isEmpty();
+    }
+
+    public ProgramState oneStep() throws MyException {
+        if (isCompleted()) {
+            throw new EmptyStackException("The execution stack is empty");
+        }
+
+        return executionStack.pop().execute(this);
+    }
+
     @Override
     public String toString() {
         final int LINE_LENGTH = 80;
         StringBuilder builder = new StringBuilder();
 
+        builder.append("Program ID: " + programId + "\n\n");
         builder.append(executionStack);
         builder.append(symbolsTable);
         builder.append(output);

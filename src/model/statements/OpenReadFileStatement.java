@@ -50,7 +50,7 @@ public class OpenReadFileStatement implements IStatement {
             throw new FileException(e.getMessage());
         }
 
-        return state;
+        return null;
     }
 
     public IStatement deepCopy() {

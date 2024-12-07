@@ -12,32 +12,33 @@ import exceptions.MyException;
 import model.states.ProgramState;
 
 public class Repository implements IRepository {
-    private int threadIndex = 0;
     private String logFilePath = "program_state.log";
-    private final List<ProgramState> programThreads;
+    private List<ProgramState> programThreads;
 
-    public Repository(ProgramState mainState) {
+    public Repository(ProgramState mainThread) {
         this.programThreads = new ArrayList<>();
-        this.programThreads.add(mainState);
+        this.programThreads.add(mainThread);
     }
 
-    public Repository(ProgramState mainState, String fileName) {
-        this(mainState);
+    public Repository(ProgramState mainThread, String fileName) {
+        this(mainThread);
         this.logFilePath = fileName;
     }
 
     @Override
-    public ProgramState getCurrentProgram() throws MyException {
-        return programThreads.get(threadIndex);
+    public List<ProgramState> getProgramThreads() {
+        return new ArrayList<>(programThreads);
     }
 
     @Override
-    public void logProgramState(boolean executedGarbageCollector) throws MyException {
+    public void setProgramThreads(List<ProgramState> programThreads) {
+        this.programThreads = programThreads;
+    }
+
+    @Override
+    public void logProgramState(ProgramState program) throws MyException {
         try (PrintWriter logFile = new PrintWriter(new BufferedWriter(new FileWriter(this.logFilePath, true)))) {
-            if (executedGarbageCollector) {
-                logFile.write("After executing the garbage collector:\n\n");
-            }
-            logFile.write(this.getCurrentProgram().toString());
+            logFile.write(program.toString());
         } catch (IOException e) {
             throw new FileException();
         }

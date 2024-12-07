@@ -25,7 +25,7 @@ public class VariableDeclarationStatement implements IStatement {
         }
 
         symbolsTable.setVariableValue(variableName, variableType.defaultValue());
-        return state;
+        return null;
     }
 
     @Override

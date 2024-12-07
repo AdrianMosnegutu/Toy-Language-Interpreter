@@ -44,7 +44,7 @@ public class WriteHeapStatement implements IStatement {
         }
 
         heap.setValueAt(((RefValue) value).getAddress(), expressionValue);
-        return state;
+        return null;
     }
 
     @Override

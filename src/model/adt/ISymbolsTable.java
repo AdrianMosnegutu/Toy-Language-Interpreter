@@ -47,4 +47,11 @@ public interface ISymbolsTable {
      *                                    symbols table
      */
     void deleteVariable(String variableName) throws UndefinedVariableException;
+
+    /**
+     * Creates and returns a deep copy of the current SymbolsTable.
+     * 
+     * @return a new SymbolsTable instance that is a deep copy of the current table.
+     */
+    SymbolsTable deepCopy();
 }

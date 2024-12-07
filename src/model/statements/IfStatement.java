@@ -35,7 +35,7 @@ public class IfStatement implements IStatement {
         Boolean conditionMet = ((BoolValue) condition).getValue();
         executionStack.push(conditionMet ? then : otherwise);
 
-        return state;
+        return null;
     }
 
     @Override

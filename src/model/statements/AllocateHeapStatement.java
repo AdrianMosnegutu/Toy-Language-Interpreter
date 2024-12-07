@@ -44,7 +44,7 @@ public class AllocateHeapStatement implements IStatement {
         }
 
         ((RefValue) value).setAddress(heap.allocate(expressionValue.deepCopy()));
-        return state;
+        return null;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class CloseReadFileStatement implements IStatement {
         }
 
         fileTable.closeFile(fileName);
-        return state;
+        return null;
     }
 
     @Override
