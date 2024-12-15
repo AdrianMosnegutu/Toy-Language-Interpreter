@@ -8,6 +8,7 @@ import exceptions.MyException;
 import model.adt.IHeap;
 import model.adt.ISymbolsTable;
 import model.enums.ArithmeticRelation;
+import model.types.BoolType;
 import model.types.IType;
 import model.types.IntType;
 import model.values.BoolValue;
@@ -73,9 +74,9 @@ public class RelationalExpression implements IExpression {
 
         if (type1.equals(new IntType())) {
             if (type2.equals(new IntType())) {
-                return new IntType();
+                return new BoolType();
             } else {
-                throw new IncompatibleTypesException(new IntType(), type2);
+                throw new IncompatibleTypesException(new BoolType(), type2);
             }
         } else {
             throw new IncompatibleTypesException(new IntType(), type1);
