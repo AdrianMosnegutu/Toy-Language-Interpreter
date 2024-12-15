@@ -245,26 +245,44 @@ public final class ProgramExamples {
                 new CompoundStatement(
                         new VariableDeclarationStatement(new RefType(new IntType()), "a"),
                         new CompoundStatement(
-                                new AssignStatement("v", new ValueExpression(new IntValue(10))),
+                                new AssignStatement("v",
+                                        new ValueExpression(new IntValue(10))),
                                 new CompoundStatement(
-                                        new AllocateHeapStatement("a", new ValueExpression(new IntValue(22))),
+                                        new AllocateHeapStatement("a",
+                                                new ValueExpression(
+                                                        new IntValue(22))),
                                         new CompoundStatement(
-                                                new ForkStatement(new CompoundStatement(
-                                                        new WriteHeapStatement("a",
-                                                                new ValueExpression(new IntValue(30))),
+                                                new ForkStatement(
                                                         new CompoundStatement(
-                                                                new AssignStatement("v",
-                                                                        new ValueExpression(new IntValue(32))),
+                                                                new WriteHeapStatement(
+                                                                        "a",
+                                                                        new ValueExpression(
+                                                                                new IntValue(30))),
                                                                 new CompoundStatement(
-                                                                        new PrintStatement(new VariableExpression("v")),
-                                                                        new PrintStatement(new ReadHeapExpression(
-                                                                                new VariableExpression("a"))))))),
+                                                                        new AssignStatement(
+                                                                                "v",
+                                                                                new ValueExpression(
+                                                                                        new IntValue(32))),
+                                                                        new CompoundStatement(
+                                                                                new PrintStatement(
+                                                                                        new VariableExpression(
+                                                                                                "v")),
+                                                                                new PrintStatement(
+                                                                                        new ReadHeapExpression(
+                                                                                                new VariableExpression(
+                                                                                                        "a"))))))),
                                                 new CompoundStatement(
-                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new PrintStatement(
+                                                                new VariableExpression(
+                                                                        "v")),
                                                         new CompoundStatement(
-                                                                new AssignStatement("v",
-                                                                        new ValueExpression(new IntValue(40))),
-                                                                new PrintStatement(new ReadHeapExpression(
-                                                                        new VariableExpression("a"))))))))));
+                                                                new AssignStatement(
+                                                                        "v",
+                                                                        new ValueExpression(
+                                                                                new IntValue(40))),
+                                                                new PrintStatement(
+                                                                        new ReadHeapExpression(
+                                                                                new VariableExpression(
+                                                                                        "a"))))))))));
     }
 }
