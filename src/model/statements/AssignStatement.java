@@ -30,16 +30,8 @@ public class AssignStatement implements IStatement {
         }
 
         IValue expressionResult = assignedExpression.evaluate(symbolsTable, state.getHeap());
-
-        IType variableType = symbolsTable.getVariableValue(variableName).getType();
-        IType expressionResultType = expressionResult.getType();
-
-        // Check if the expression evaluates to a value of the same type as the variable
-        if (!variableType.equals(expressionResultType)) {
-            throw new IncompatibleTypesException(variableType, expressionResultType);
-        }
-
         symbolsTable.setVariableValue(variableName, expressionResult);
+
         return null;
     }
 

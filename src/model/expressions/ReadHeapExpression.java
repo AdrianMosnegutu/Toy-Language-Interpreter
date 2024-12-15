@@ -20,13 +20,7 @@ public class ReadHeapExpression implements IExpression {
 
     @Override
     public IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException {
-        // Check if the expression evaluates to a RefValue
-        IValue value = expression.evaluate(symbolsTable, heap);
-        if (!value.getType().equals(new RefType())) {
-            throw new IncompatibleTypesException(new RefType(), value.getType());
-        }
-
-        return heap.getValueAt(((RefValue) value).getAddress());
+        return heap.getValueAt(((RefValue) expression.evaluate(symbolsTable, heap)).getAddress());
     }
 
     @Override

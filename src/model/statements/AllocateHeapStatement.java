@@ -33,20 +33,15 @@ public class AllocateHeapStatement implements IStatement {
             throw new UndefinedVariableException(variableName);
         }
 
-        // Check if the variable is of type RefType
-        IValue value = symbolsTable.getVariableValue(variableName);
-        if (!value.getType().equals(new RefType())) {
-            throw new IncompatibleTypesException(new RefType(), value.getType());
-        }
-
         // Check if the expression evaluates to a value of the same type as the location
         // type inside the RefValue
         IValue expressionValue = this.expression.evaluate(symbolsTable, heap);
-        if (!expressionValue.getType().equals(((RefValue) value).getLocationType())) {
-            throw new IncompatibleTypesException(((RefValue) value).getLocationType(), expressionValue.getType());
+        RefValue value = (RefValue) symbolsTable.getVariableValue(variableName);
+        if (!expressionValue.getType().equals((value).getLocationType())) {
+            throw new IncompatibleTypesException((value).getLocationType(), expressionValue.getType());
         }
 
-        ((RefValue) value).setAddress(heap.allocate(expressionValue.deepCopy()));
+        (value).setAddress(heap.allocate(expressionValue.deepCopy()));
         return null;
     }
 
@@ -55,7 +50,7 @@ public class AllocateHeapStatement implements IStatement {
         IType typeVar = typeTable.get(variableName);
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeVar.equals(new RefType(typeExp))) {
+        if (typeVar.equals(new RefType())) {
             return typeTable;
         } else {
             throw new IncompatibleTypesException(new RefType(typeExp), typeVar);

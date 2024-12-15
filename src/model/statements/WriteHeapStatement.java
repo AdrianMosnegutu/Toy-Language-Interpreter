@@ -40,14 +40,7 @@ public class WriteHeapStatement implements IStatement {
             throw new IncompatibleTypesException(new RefType(), value.getType());
         }
 
-        // Check if the expression evaluates to a value of the same type as the location
-        // type inside the RefValue
-        IValue expressionValue = expression.evaluate(symbolsTable, heap);
-        if (!expressionValue.getType().equals(((RefValue) value).getLocationType())) {
-            throw new IncompatibleTypesException(((RefValue) value).getLocationType(), expressionValue.getType());
-        }
-
-        heap.setValueAt(((RefValue) value).getAddress(), expressionValue);
+        heap.setValueAt(((RefValue) value).getAddress(), expression.evaluate(symbolsTable, heap));
         return null;
     }
 

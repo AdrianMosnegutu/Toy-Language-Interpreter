@@ -27,20 +27,8 @@ public class ArithmeticExpression implements IExpression {
 
     @Override
     public IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException {
-        // Check if the first operand evaluates to an IntValue
-        IValue value1 = operand1.evaluate(symbolsTable, heap);
-        if (!value1.getType().equals(new IntType())) {
-            throw new IncompatibleTypesException(new IntType(), value1.getType());
-        }
-
-        // Check if the second operand evaluates to an IntValue
-        IValue value2 = operand2.evaluate(symbolsTable, heap);
-        if (!value2.getType().equals(new IntType())) {
-            throw new IncompatibleTypesException(new IntType(), value2.getType());
-        }
-
-        Integer intValue1 = ((IntValue) value1).getValue();
-        Integer intValue2 = ((IntValue) value2).getValue();
+        Integer intValue1 = ((IntValue) operand1.evaluate(symbolsTable, heap)).getValue();
+        Integer intValue2 = ((IntValue) operand2.evaluate(symbolsTable, heap)).getValue();
 
         switch (operation) {
             case ADDITION:

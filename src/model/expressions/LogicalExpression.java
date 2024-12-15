@@ -26,20 +26,8 @@ public class LogicalExpression implements IExpression {
 
     @Override
     public IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException {
-        // Check if the first operand evaluates to a BoolValue
-        IValue value1 = operand1.evaluate(symbolsTable, heap);
-        if (!value1.getType().equals(new BoolType())) {
-            throw new IncompatibleTypesException(new BoolType(), value1.getType());
-        }
-
-        // Check if the second operand evaluates to a BoolValue
-        IValue value2 = operand2.evaluate(symbolsTable, heap);
-        if (!value2.getType().equals(new BoolType())) {
-            throw new IncompatibleTypesException(new BoolType(), value2.getType());
-        }
-
-        Boolean boolValue1 = ((BoolValue) value1).getValue();
-        Boolean boolValue2 = ((BoolValue) value2).getValue();
+        Boolean boolValue1 = ((BoolValue) operand1.evaluate(symbolsTable, heap)).getValue();
+        Boolean boolValue2 = ((BoolValue) operand2.evaluate(symbolsTable, heap)).getValue();
 
         switch (operation) {
             case AND:

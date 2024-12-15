@@ -12,7 +12,6 @@ import model.states.ProgramState;
 import model.types.BoolType;
 import model.types.IType;
 import model.values.BoolValue;
-import model.values.IValue;
 
 public class IfStatement implements IStatement {
     private final IExpression expression;
@@ -30,13 +29,7 @@ public class IfStatement implements IStatement {
         IExecutionStack executionStack = state.getExecutionStack();
         ISymbolsTable symbolsTable = state.getSymbolsTable();
 
-        // Check if the expression evaluates to a BoolValue
-        IValue condition = this.expression.evaluate(symbolsTable, state.getHeap());
-        if (!condition.getType().equals(new BoolType())) {
-            throw new IncompatibleTypesException(new BoolType(), condition.getType());
-        }
-
-        Boolean conditionMet = ((BoolValue) condition).getValue();
+        Boolean conditionMet = ((BoolValue) expression.evaluate(symbolsTable, state.getHeap())).getValue();
         executionStack.push(conditionMet ? then : otherwise);
 
         return null;

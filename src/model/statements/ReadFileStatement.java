@@ -45,13 +45,8 @@ public class ReadFileStatement implements IStatement {
             throw new IncompatibleTypesException(new IntType(), variableType);
         }
 
-        // Check if the expression evaluates to a StringValue
-        IValue value = expression.evaluate(symbolsTable, state.getHeap());
-        if (!value.getType().equals(new StringType())) {
-            throw new IncompatibleTypesException(new StringType(), value.getType());
-        }
-
         // Check if the file is open
+        IValue value = expression.evaluate(symbolsTable, state.getHeap());
         BufferedReader fileDescriptor = fileTable.getFile((StringValue) value);
         if (fileDescriptor == null) {
             throw new UndefinedFileException(((StringValue) value).getValue());

@@ -1,32 +1,10 @@
 package model.states;
 
-import model.enums.ArithmeticOperation;
-import model.enums.ArithmeticRelation;
-import model.expressions.ArithmeticExpression;
-import model.expressions.ReadHeapExpression;
-import model.expressions.RelationalExpression;
-import model.expressions.ValueExpression;
-import model.expressions.VariableExpression;
-import model.statements.AllocateHeapStatement;
-import model.statements.AssignStatement;
-import model.statements.CloseReadFileStatement;
-import model.statements.CompoundStatement;
-import model.statements.ForkStatement;
-import model.statements.IStatement;
-import model.statements.IfStatement;
-import model.statements.OpenReadFileStatement;
-import model.statements.PrintStatement;
-import model.statements.ReadFileStatement;
-import model.statements.VariableDeclarationStatement;
-import model.statements.WhileStatement;
-import model.statements.WriteHeapStatement;
-import model.types.BoolType;
-import model.types.IntType;
-import model.types.RefType;
-import model.types.StringType;
-import model.values.BoolValue;
-import model.values.IntValue;
-import model.values.StringValue;
+import model.enums.*;
+import model.expressions.*;
+import model.statements.*;
+import model.types.*;
+import model.values.*;
 
 public final class ProgramExamples {
     public static IStatement printValueExample() {

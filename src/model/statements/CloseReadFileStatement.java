@@ -11,7 +11,6 @@ import model.expressions.IExpression;
 import model.states.ProgramState;
 import model.types.IType;
 import model.types.StringType;
-import model.values.IValue;
 import model.values.StringValue;
 
 public class CloseReadFileStatement implements IStatement {
@@ -26,14 +25,8 @@ public class CloseReadFileStatement implements IStatement {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
         IFileTable fileTable = state.getFileTable();
 
-        // Check if the expression evaluates to a StringValue
-        IValue value = expression.evaluate(symbolsTable, state.getHeap());
-        if (!value.getType().equals(new StringType())) {
-            throw new IncompatibleTypesException(new StringType(), value.getType());
-        }
-
         // Check if the file is open
-        StringValue fileName = (StringValue) value;
+        StringValue fileName = (StringValue) expression.evaluate(symbolsTable, state.getHeap());
         if (fileTable.getFile(fileName) == null) {
             throw new UndefinedFileException(fileName.getValue());
         }
