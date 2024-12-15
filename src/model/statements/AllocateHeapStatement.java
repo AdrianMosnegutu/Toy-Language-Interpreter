@@ -1,5 +1,7 @@
 package model.statements;
 
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.MyException;
 import exceptions.UndefinedVariableException;
@@ -7,6 +9,7 @@ import model.adt.IHeap;
 import model.adt.ISymbolsTable;
 import model.expressions.IExpression;
 import model.states.ProgramState;
+import model.types.IType;
 import model.types.RefType;
 import model.values.IValue;
 import model.values.RefValue;
@@ -45,6 +48,18 @@ public class AllocateHeapStatement implements IStatement {
 
         ((RefValue) value).setAddress(heap.allocate(expressionValue.deepCopy()));
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        IType typeVar = typeTable.get(variableName);
+        IType typeExp = expression.typecheck(typeTable);
+
+        if (typeVar.equals(new RefType(typeExp))) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(new RefType(typeExp), typeVar);
+        }
     }
 
     @Override

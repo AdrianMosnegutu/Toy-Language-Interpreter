@@ -1,5 +1,7 @@
 package model.statements;
 
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.MyException;
 import exceptions.UndefinedFileException;
@@ -7,6 +9,7 @@ import model.adt.IFileTable;
 import model.adt.ISymbolsTable;
 import model.expressions.IExpression;
 import model.states.ProgramState;
+import model.types.IType;
 import model.types.StringType;
 import model.values.IValue;
 import model.values.StringValue;
@@ -37,6 +40,17 @@ public class CloseReadFileStatement implements IStatement {
 
         fileTable.closeFile(fileName);
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        IType typeExp = expression.typecheck(typeTable);
+
+        if (typeExp.equals(new StringType())) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(new StringType(), typeExp);
+        }
     }
 
     @Override

@@ -1,7 +1,11 @@
 package model.statements;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import exceptions.MyException;
 import model.states.ProgramState;
+import model.types.IType;
 
 public class ForkStatement implements IStatement {
     private final IStatement inner;
@@ -18,6 +22,12 @@ public class ForkStatement implements IStatement {
                 state.getFileTable(),
                 state.getHeap(),
                 inner);
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        inner.typecheck(new HashMap<>(typeTable));
+        return typeTable;
     }
 
     @Override

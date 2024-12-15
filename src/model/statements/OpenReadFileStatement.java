@@ -3,6 +3,7 @@ package model.statements;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Map;
 
 import exceptions.FileAlreadyOpenedException;
 import exceptions.FileException;
@@ -13,6 +14,7 @@ import model.adt.IFileTable;
 import model.adt.ISymbolsTable;
 import model.expressions.IExpression;
 import model.states.ProgramState;
+import model.types.IType;
 import model.types.StringType;
 import model.values.IValue;
 import model.values.StringValue;
@@ -51,6 +53,17 @@ public class OpenReadFileStatement implements IStatement {
         }
 
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        IType typeExp = expression.typecheck(typeTable);
+
+        if (typeExp.equals(new StringType())) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(new StringType(), typeExp);
+        }
     }
 
     public IStatement deepCopy() {

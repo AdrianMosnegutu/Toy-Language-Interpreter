@@ -1,11 +1,15 @@
 package model.statements;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.MyException;
 import model.adt.IExecutionStack;
 import model.expressions.IExpression;
 import model.states.ProgramState;
 import model.types.BoolType;
+import model.types.IType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -36,6 +40,18 @@ public class WhileStatement implements IStatement {
         }
 
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        inner.typecheck(new HashMap<>(typeTable));
+        IType typeExp = expression.typecheck(typeTable);
+
+        if (typeExp.equals(new BoolType())) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(new BoolType(), typeExp);
+        }
     }
 
     @Override

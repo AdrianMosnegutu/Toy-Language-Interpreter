@@ -2,6 +2,7 @@ package model.statements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 
 import exceptions.FileException;
 import exceptions.IncompatibleTypesException;
@@ -66,6 +67,17 @@ public class ReadFileStatement implements IStatement {
         }
 
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        IType typeExp = expression.typecheck(typeTable);
+
+        if (typeExp.equals(new StringType())) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(new StringType(), typeExp);
+        }
     }
 
     @Override

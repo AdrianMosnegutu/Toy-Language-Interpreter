@@ -1,5 +1,7 @@
 package model.statements;
 
+import java.util.Map;
+
 import exceptions.MyException;
 import exceptions.VariableExistsException;
 import model.adt.ISymbolsTable;
@@ -26,6 +28,12 @@ public class VariableDeclarationStatement implements IStatement {
 
         symbolsTable.setVariableValue(variableName, variableType.defaultValue());
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        typeTable.put(variableName, variableType);
+        return typeTable;
     }
 
     @Override

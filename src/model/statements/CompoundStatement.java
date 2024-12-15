@@ -1,8 +1,11 @@
 package model.statements;
 
+import java.util.Map;
+
 import exceptions.MyException;
 import model.adt.IExecutionStack;
 import model.states.ProgramState;
+import model.types.IType;
 
 public class CompoundStatement implements IStatement {
     private final IStatement first;
@@ -21,6 +24,11 @@ public class CompoundStatement implements IStatement {
         executionStack.push(first);
 
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        return second.typecheck(first.typecheck(typeTable));
     }
 
     @Override

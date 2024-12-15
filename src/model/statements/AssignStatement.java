@@ -1,5 +1,7 @@
 package model.statements;
 
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.MyException;
 import exceptions.UndefinedVariableException;
@@ -39,6 +41,18 @@ public class AssignStatement implements IStatement {
 
         symbolsTable.setVariableValue(variableName, expressionResult);
         return null;
+    }
+
+    @Override
+    public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        IType typeVar = typeTable.get(variableName);
+        IType typeExp = assignedExpression.typecheck(typeTable);
+
+        if (typeVar.equals(typeExp)) {
+            return typeTable;
+        } else {
+            throw new IncompatibleTypesException(typeVar, typeExp);
+        }
     }
 
     @Override
