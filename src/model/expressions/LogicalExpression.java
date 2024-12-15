@@ -1,5 +1,7 @@
 package model.expressions;
 
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.InvalidOperationException;
 import exceptions.MyException;
@@ -7,6 +9,7 @@ import model.adt.IHeap;
 import model.adt.ISymbolsTable;
 import model.enums.LogicalOperation;
 import model.types.BoolType;
+import model.types.IType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -47,6 +50,22 @@ public class LogicalExpression implements IExpression {
 
             default:
                 throw new InvalidOperationException();
+        }
+    }
+
+    @Override
+    public IType typecheck(Map<String, IType> typeTable) throws MyException {
+        IType type1 = operand1.typecheck(typeTable);
+        IType type2 = operand2.typecheck(typeTable);
+
+        if (type1.equals(new BoolType())) {
+            if (type2.equals(new BoolType())) {
+                return new BoolType();
+            } else {
+                throw new IncompatibleTypesException(new BoolType(), type2);
+            }
+        } else {
+            throw new IncompatibleTypesException(new BoolType(), type1);
         }
     }
 

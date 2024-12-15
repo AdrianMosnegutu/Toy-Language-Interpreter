@@ -1,11 +1,14 @@
 package model.expressions;
 
+import java.util.Map;
+
 import exceptions.IncompatibleTypesException;
 import exceptions.InvalidOperationException;
 import exceptions.MyException;
 import model.adt.IHeap;
 import model.adt.ISymbolsTable;
 import model.enums.ArithmeticRelation;
+import model.types.IType;
 import model.types.IntType;
 import model.values.BoolValue;
 import model.values.IValue;
@@ -60,6 +63,22 @@ public class RelationalExpression implements IExpression {
 
             default:
                 throw new InvalidOperationException();
+        }
+    }
+
+    @Override
+    public IType typecheck(Map<String, IType> typeTable) throws MyException {
+        IType type1 = operand1.typecheck(typeTable);
+        IType type2 = operand2.typecheck(typeTable);
+
+        if (type1.equals(new IntType())) {
+            if (type2.equals(new IntType())) {
+                return new IntType();
+            } else {
+                throw new IncompatibleTypesException(new IntType(), type2);
+            }
+        } else {
+            throw new IncompatibleTypesException(new IntType(), type1);
         }
     }
 

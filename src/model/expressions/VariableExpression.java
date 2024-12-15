@@ -1,8 +1,11 @@
 package model.expressions;
 
+import java.util.Map;
+
 import exceptions.MyException;
 import model.adt.IHeap;
 import model.adt.ISymbolsTable;
+import model.types.IType;
 import model.values.IValue;
 
 public class VariableExpression implements IExpression {
@@ -15,6 +18,11 @@ public class VariableExpression implements IExpression {
     @Override
     public IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException {
         return symbolsTable.getVariableValue(name);
+    }
+
+    @Override
+    public IType typecheck(Map<String, IType> typeTable) throws MyException {
+        return typeTable.get(name);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package model.expressions;
 
+import java.util.Map;
+
 import exceptions.MyException;
 import model.adt.IHeap;
 import model.adt.ISymbolsTable;
+import model.types.IType;
 import model.values.IValue;
 
 public interface IExpression {
@@ -15,6 +18,17 @@ public interface IExpression {
      * @throws MyException if an error occurs during evaluation
      */
     IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException;
+
+    /**
+     * Checks the type of the expression based on the provided symbols table.
+     *
+     * @param symbolsTable a map containing the variable names and their
+     *                     corresponding types
+     * @return the type of the expression
+     * @throws MyException if there is a type mismatch or any other type-related
+     *                     error
+     */
+    IType typecheck(Map<String, IType> symbolsTable) throws MyException;
 
     /**
      * Creates and returns a deep copy of this expression.
