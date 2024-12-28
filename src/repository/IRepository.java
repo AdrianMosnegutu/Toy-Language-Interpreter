@@ -26,6 +26,7 @@ public interface IRepository {
      * Logs the current state of the program.
      *
      * @param program the current state of the program to be logged
+     *
      * @throws MyException if an error occurs during logging
      */
     void logProgramState(ProgramState program) throws MyException;

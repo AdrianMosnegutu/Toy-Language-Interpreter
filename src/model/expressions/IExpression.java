@@ -15,6 +15,7 @@ public interface IExpression {
      * @param symbolsTable the symbols table containing variable bindings
      * @param heap         the heap containing memory allocations
      * @return the result of the expression evaluation as an IValue
+     * 
      * @throws MyException if an error occurs during evaluation
      */
     IValue evaluate(ISymbolsTable symbolsTable, IHeap heap) throws MyException;
@@ -25,6 +26,7 @@ public interface IExpression {
      * @param symbolsTable a map containing the variable names and their
      *                     corresponding types
      * @return the type of the expression
+     *
      * @throws MyException if there is a type mismatch or any other type-related
      *                     error
      */

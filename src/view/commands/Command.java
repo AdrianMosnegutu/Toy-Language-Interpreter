@@ -11,8 +11,7 @@ public abstract class Command {
 
     /**
      * Executes the command. This method should be implemented by subclasses to
-     * define
-     * the specific behavior of the command when it is executed.
+     * define the specific behavior of the command when it is executed.
      */
     public abstract void execute();
 

@@ -12,6 +12,7 @@ public interface IFileTable {
      * @param fileName the name of the file for which the BufferedReader is to be
      *                 retrieved
      * @return the BufferedReader associated with the specified file name
+     *
      * @throws UndefinedFileException if the file name is not found in the file
      *                                table
      */
@@ -39,6 +40,7 @@ public interface IFileTable {
      * Closes the file associated with the given file name.
      *
      * @param fileName the name of the file to be closed
+     * 
      * @throws UndefinedFileException if the file with the given name is not defined
      *                                in the file table
      */

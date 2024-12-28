@@ -11,6 +11,7 @@ public interface ISymbolsTable {
      *
      * @param variableName the name of the variable whose value is to be retrieved
      * @return the value associated with the specified variable name
+     * 
      * @throws UndefinedVariableException if the variable name is not defined in the
      *                                    symbols table
      */
@@ -43,6 +44,7 @@ public interface ISymbolsTable {
      * Deletes a variable from the symbols table.
      *
      * @param variableName the name of the variable to be deleted
+     * 
      * @throws UndefinedVariableException if the variable does not exist in the
      *                                    symbols table
      */

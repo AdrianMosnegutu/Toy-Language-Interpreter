@@ -12,6 +12,7 @@ public interface IStatement {
      *
      * @param state the current state of the program
      * @return the updated state of the program after executing the statement
+     *
      * @throws MyException if an error occurs during the execution of the statement
      */
     ProgramState execute(ProgramState state) throws MyException;
@@ -24,6 +25,7 @@ public interface IStatement {
      *                  corresponding types.
      * @return a map representing the updated type environment after type checking
      *         the statement.
+     *
      * @throws MyException if a type error is encountered during type checking.
      */
     Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException;

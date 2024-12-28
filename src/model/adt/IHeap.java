@@ -11,6 +11,7 @@ public interface IHeap {
      *
      * @param address the address in the heap where the value is stored
      * @return the value stored at the specified address
+     *
      * @throws NullReferenceException if the address does not exist in the heap
      */
     IValue getValueAt(int address) throws NullReferenceException;
@@ -20,6 +21,7 @@ public interface IHeap {
      *
      * @param address  the address in the heap where the value should be updated
      * @param newValue the new value to set at the specified address
+     *
      * @throws NullReferenceException if the address does not exist in the heap
      */
     void setValueAt(int address, IValue newValue) throws NullReferenceException;
