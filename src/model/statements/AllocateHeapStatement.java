@@ -41,7 +41,7 @@ public class AllocateHeapStatement implements IStatement {
             throw new IncompatibleTypesException((value).getLocationType(), expressionValue.getType());
         }
 
-        (value).setAddress(heap.allocate(expressionValue.deepCopy()));
+        value.setAddress(heap.allocate(expressionValue.deepCopy()));
         return null;
     }
 
