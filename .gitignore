@@ -1,0 +1,43 @@
+.git
+
+# Ignore Gradle build output
+/build/
+/out/
+
+# Ignore Gradle wrapper files
+gradle/
+
+# Ignore app-specific build directories
+app/build/
+app/bin/
+
+# Ignore IDE project files
+/.idea/
+/*.iml
+/.vscode/
+
+# Eclipse-specific files
+app/.settings/
+app/.classpath
+app/.project
+.settings/
+.project
+
+# Ignore logs
+logs/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependency caches
+.gradle/
+
+# Ignore Java class files
+*.class
+
+# Ignore JVM-related files
+*.log
+*.pid
+*.gz
+*.tar
