@@ -28,6 +28,21 @@ public class Controller implements IController {
         repository = new Repository(mainState, logFilePath);
     }
 
+    @Override
+    public void allStep(boolean display) {
+        executor = Executors.newFixedThreadPool(2);
+        List<ProgramState> programThreads = removeCompletedThreads(repository.getProgramThreads());
+
+        while (!programThreads.isEmpty()) {
+            executeGarbageCollector(programThreads);
+            oneStepAll(programThreads);
+            programThreads = removeCompletedThreads(programThreads);
+        }
+
+        executor.shutdownNow();
+        repository.setProgramThreads(programThreads);
+    }
+
     private Set<Integer> getUnusedAddresses(List<ProgramState> programThreads) {
         IHeap heap = programThreads.get(0).getHeap();
         Set<Integer> addressesNotInUse = heap.getAddresses();
@@ -109,21 +124,6 @@ public class Controller implements IController {
         logAll(programThreads);
 
         // Save the current program threads
-        repository.setProgramThreads(programThreads);
-    }
-
-    @Override
-    public void allStep(boolean display) {
-        executor = Executors.newFixedThreadPool(2);
-        List<ProgramState> programThreads = removeCompletedThreads(repository.getProgramThreads());
-
-        while (!programThreads.isEmpty()) {
-            executeGarbageCollector(programThreads);
-            oneStepAll(programThreads);
-            programThreads = removeCompletedThreads(programThreads);
-        }
-
-        executor.shutdownNow();
         repository.setProgramThreads(programThreads);
     }
 }

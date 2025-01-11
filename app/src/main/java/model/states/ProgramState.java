@@ -15,14 +15,20 @@ import model.adt.SymbolsTable;
 import model.statements.IStatement;
 
 public class ProgramState {
+    private static int generatedPid = 0;
+
+    private static synchronized int generatePid() {
+        return ++generatedPid;
+    }
+
     private final IExecutionStack executionStack;
     private final ISymbolsTable symbolsTable;
     private final IOutputList output;
+
     private final IFileTable fileTable;
     private final IHeap heap;
 
-    private static int id = 0;
-    private int programId;
+    private final int pid;
 
     public ProgramState(IStatement initialProgram) {
         executionStack = new ExecutionStack();
@@ -32,7 +38,7 @@ public class ProgramState {
         heap = new Heap();
         executionStack.push(initialProgram);
 
-        programId = getId();
+        pid = generatePid();
     }
 
     public ProgramState(
@@ -48,7 +54,7 @@ public class ProgramState {
         this.heap = heap;
         executionStack.push(initialProgram);
 
-        programId = getId();
+        pid = generatePid();
     }
 
     public IExecutionStack getExecutionStack() {
@@ -71,8 +77,8 @@ public class ProgramState {
         return heap;
     }
 
-    public static synchronized int getId() {
-        return ++id;
+    public int getPid() {
+        return pid;
     }
 
     public Boolean isCompleted() {
@@ -92,7 +98,7 @@ public class ProgramState {
         final int LINE_LENGTH = 80;
         StringBuilder builder = new StringBuilder();
 
-        builder.append("Program ID: " + programId + "\n\n");
+        builder.append("Program ID: " + pid + "\n\n");
         builder.append(executionStack);
         builder.append(symbolsTable);
         builder.append(output);
