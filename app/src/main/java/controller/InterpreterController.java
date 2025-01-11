@@ -7,14 +7,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import model.statements.IStatement;
 import model.states.ProgramExamples;
 
 public class InterpreterController {
     private ObservableList<String> programDescriptions;
     private List<IStatement> programStatements;
+
+    @FXML
+    private TabPane applicationTabs;
 
     @FXML
     private ListView<String> examplesList;
@@ -49,15 +57,43 @@ public class InterpreterController {
                 ProgramExamples.forkStatementExample());
 
         examplesList.setItems(programDescriptions);
+
         examplesList.getSelectionModel().selectedItemProperty().addListener((obsrvable, oldValue, newValue) -> {
             int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
             codePreview.setText(programStatements.get(selectedIndex).toString());
         });
         examplesList.getSelectionModel().select(0);
+
+        examplesList.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                selectExample(null);
+            }
+        });
     }
 
     @FXML
     public void selectExample(ActionEvent e) {
-        System.out.println(examplesList.getSelectionModel().getSelectedItem());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ProgramDashboard.fxml"));
+
+        Node programDashboard;
+        ProgramDashboardController controller;
+
+        try {
+            programDashboard = loader.load();
+            controller = loader.getController();
+        } catch (Exception err) {
+            err.printStackTrace();
+            return;
+        }
+
+        int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
+        controller.setProgramDescription(programDescriptions.get(selectedIndex));
+
+        int numOfTabs = applicationTabs.getTabs().size();
+        Tab programDashboardTab = new Tab(programDescriptions.get(selectedIndex), programDashboard);
+        programDashboardTab.setClosable(true);
+
+        applicationTabs.getTabs().add(programDashboardTab);
+        applicationTabs.getSelectionModel().select(numOfTabs);
     }
 }
