@@ -46,7 +46,7 @@
             </HBox>
          </children>
       </VBox>
-      <GridPane gridLinesVisible="true" VBox.vgrow="ALWAYS">
+      <GridPane VBox.vgrow="ALWAYS">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -123,7 +123,7 @@
                   <TableView fx:id="heapTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="heapAddressColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Address" />
-                        <TableColumn fx:id="heapVariableColumn" editable="false" prefWidth="75.0" text="Value" />
+                        <TableColumn fx:id="heapValueColumn" editable="false" prefWidth="75.0" text="Value" />
                      </columns>
                   </TableView>
                </children>
@@ -165,7 +165,7 @@
             </VBox>
          </children>
       </GridPane>
-      <Button mnemonicParsing="false" text="Execute one step">
+      <Button mnemonicParsing="false" onAction="#executeOneStep" text="Execute one step">
          <font>
             <Font name="Roboto" size="14.0" />
          </font>

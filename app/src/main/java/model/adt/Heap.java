@@ -58,6 +58,11 @@ public class Heap implements IHeap {
     }
 
     @Override
+    public Map<Integer, IValue> getAll() {
+        return new HashMap<>(map);
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Heap:\n");

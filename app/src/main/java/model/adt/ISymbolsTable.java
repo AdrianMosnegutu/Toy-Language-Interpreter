@@ -1,5 +1,6 @@
 package model.adt;
 
+import java.util.Map;
 import java.util.Set;
 
 import exceptions.UndefinedVariableException;
@@ -56,4 +57,6 @@ public interface ISymbolsTable {
      * @return a new SymbolsTable instance that is a deep copy of the current table.
      */
     SymbolsTable deepCopy();
+
+    Map<String, IValue> getAll();
 }

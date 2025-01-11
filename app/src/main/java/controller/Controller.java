@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -19,20 +20,22 @@ import repository.Repository;
 public class Controller implements IController {
     private final IRepository repository;
     private ExecutorService executor = null;
+    private List<ProgramState> programThreads;
 
     public Controller(ProgramState mainState) {
         repository = new Repository(mainState);
+        executor = Executors.newFixedThreadPool(2);
+        programThreads = removeCompletedThreads(repository.getProgramThreads());
     }
 
     public Controller(ProgramState mainState, String logFilePath) {
         repository = new Repository(mainState, logFilePath);
+        executor = Executors.newFixedThreadPool(2);
+        programThreads = removeCompletedThreads(repository.getProgramThreads());
     }
 
     @Override
     public void allStep(boolean display) {
-        executor = Executors.newFixedThreadPool(2);
-        List<ProgramState> programThreads = removeCompletedThreads(repository.getProgramThreads());
-
         while (!programThreads.isEmpty()) {
             executeGarbageCollector(programThreads);
             oneStepAll(programThreads);
@@ -41,6 +44,20 @@ public class Controller implements IController {
 
         executor.shutdownNow();
         repository.setProgramThreads(programThreads);
+    }
+
+    @Override
+    public List<ProgramState> getProgramStates() {
+        return repository.getProgramThreads();
+    }
+
+    @Override
+    public void oneStepAllPrograms() {
+        if (!programThreads.isEmpty()) {
+            executeGarbageCollector(programThreads);
+            oneStepAll(programThreads);
+            programThreads = removeCompletedThreads(programThreads);
+        }
     }
 
     private Set<Integer> getUnusedAddresses(List<ProgramState> programThreads) {

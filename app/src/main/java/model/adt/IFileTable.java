@@ -1,6 +1,7 @@
 package model.adt;
 
 import java.io.BufferedReader;
+import java.util.List;
 
 import exceptions.UndefinedFileException;
 import model.values.StringValue;
@@ -45,4 +46,6 @@ public interface IFileTable {
      *                                in the file table
      */
     void closeFile(StringValue fileName) throws UndefinedFileException;
+
+    List<StringValue> getAll();
 }

@@ -1,5 +1,6 @@
 package model.adt;
 
+import java.util.Map;
 import java.util.Set;
 
 import exceptions.NullReferenceException;
@@ -48,4 +49,6 @@ public interface IHeap {
      * @param address the address of the memory to be deallocated
      */
     void deallocate(int address) throws NullReferenceException;
+
+    Map<Integer, IValue> getAll();
 }

@@ -1,5 +1,7 @@
 package model.adt;
 
+import java.util.List;
+
 import exceptions.EmptyStackException;
 import model.statements.IStatement;
 
@@ -25,4 +27,6 @@ public interface IExecutionStack {
      * @return true if the stack is empty, false otherwise
      */
     boolean isEmpty();
+
+    List<IStatement> getAll();
 }

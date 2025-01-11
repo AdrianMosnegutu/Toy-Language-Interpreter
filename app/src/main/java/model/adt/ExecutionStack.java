@@ -1,5 +1,7 @@
 package model.adt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,6 +32,11 @@ public class ExecutionStack implements IExecutionStack {
     @Override
     public boolean isEmpty() {
         return stack.isEmpty();
+    }
+
+    @Override
+    public List<IStatement> getAll() {
+        return new ArrayList<>(stack);
     }
 
     @Override

@@ -56,6 +56,11 @@ public class SymbolsTable implements ISymbolsTable {
     }
 
     @Override
+    public Map<String, IValue> getAll() {
+        return new HashMap<>(map);
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Symbols Table:\n");

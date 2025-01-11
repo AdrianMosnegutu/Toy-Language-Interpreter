@@ -87,13 +87,15 @@ public class InterpreterController {
         }
 
         int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
-        controller.setProgramDescription(programDescriptions.get(selectedIndex));
-
         int numOfTabs = applicationTabs.getTabs().size();
+
         Tab programDashboardTab = new Tab(programDescriptions.get(selectedIndex), programDashboard);
         programDashboardTab.setClosable(true);
 
         applicationTabs.getTabs().add(programDashboardTab);
         applicationTabs.getSelectionModel().select(numOfTabs);
+
+        controller.setProgramDescription(programDescriptions.get(selectedIndex));
+        controller.setProgram(programStatements.get(selectedIndex));
     }
 }

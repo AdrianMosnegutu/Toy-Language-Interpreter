@@ -1,8 +1,15 @@
 package controller;
 
+import java.util.List;
+
 import exceptions.MyException;
+import model.states.ProgramState;
 
 public interface IController {
+    List<ProgramState> getProgramStates();
+
+    void oneStepAllPrograms();
+
     /**
      * Executes all steps of the program.
      *
