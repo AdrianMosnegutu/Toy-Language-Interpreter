@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="controller.InterpreterController">
+  <tabs>
+    <Tab closable="false" text="Program Selector">
+         <content>
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Toy Language Interpreter!">
+                           <font>
+                              <Font name="Roboto Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose an example to run">
+                           <font>
+                              <Font name="Roboto" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ListView fx:id="examplesList" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <TextArea fx:id="codePreview" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Example program...." HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="JetBrains Mono Regular" size="20.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#selectExample" text="Choose example">
+                     <font>
+                        <Font name="Roboto" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+    </Tab>
+    <Tab text="Program">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

@@ -57,10 +57,10 @@ public class IfStatement implements IStatement {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("IF (%s) THEN\n", expression));
-        builder.append(String.format("    %s\n", then));
-        builder.append(String.format("    ELSE\n"));
-        builder.append(String.format("    %s\n", otherwise));
-        builder.append("    END IF");
+        builder.append(String.format("%s\n", then));
+        builder.append(String.format("ELSE\n"));
+        builder.append(String.format("%s\n", otherwise));
+        builder.append("END IF");
         return builder.toString();
     }
 }

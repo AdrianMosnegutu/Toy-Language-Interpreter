@@ -38,6 +38,6 @@ public class CompoundStatement implements IStatement {
 
     @Override
     public String toString() {
-        return first + "\n    " + second;
+        return first + "\n" + second;
     }
 }

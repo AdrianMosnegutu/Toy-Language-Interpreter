@@ -56,8 +56,8 @@ public class WhileStatement implements IStatement {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("WHILE (%s) DO\n", expression));
-        builder.append(String.format("    %s\n", inner));
-        builder.append("    END WHILE");
+        builder.append(String.format("%s\n", inner));
+        builder.append("END WHILE");
         return builder.toString();
     }
 }

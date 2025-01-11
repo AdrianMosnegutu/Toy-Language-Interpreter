@@ -39,8 +39,8 @@ public class ForkStatement implements IStatement {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("FORK\n", inner));
-        builder.append(String.format("    %s\n", inner));
-        builder.append("    END FORK");
+        builder.append(String.format("%s\n", inner));
+        builder.append("END FORK");
         return builder.toString();
     }
 }
