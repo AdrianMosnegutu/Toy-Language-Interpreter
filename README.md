@@ -3,6 +3,7 @@
 A toy language interpreter made in Java, together with a user-friendly interface to debug and see how simple programs work.
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
@@ -26,17 +27,20 @@ The Toy Language Interpreter is a Java-based project that interprets a simple to
 To run the Toy Language Interpreter, you need to have Java and Gradle installed on your system.
 
 1. **Clone the repository**:
+
     ```bash
     git clone https://github.com/AdrianMosnegutu/Toy-Language-Interpreter.git
     cd Toy-Language-Interpreter
     ```
 
 2. **Build the project**:
+
     ```bash
     ./gradlew build
     ```
 
 3. **Run the application**:
+
     ```bash
     ./gradlew run
     ```
@@ -44,12 +48,24 @@ To run the Toy Language Interpreter, you need to have Java and Gradle installed 
 ## Usage
 
 1. **Launch the application**:
+
     After building the project, run the application using the command mentioned above.
 
 2. **Load a sample program**:
+
     Use the GUI to load one of the sample programs provided in the repository.
 
 3. **Step through the code**:
+
+    Use the debugging controls in the GUI to step through the code and observe the interpreter's execution.
+    After building the project, run the application using the command mentioned above.
+
+4. **Load a sample program**:
+
+    Use the GUI to load one of the sample programs provided in the repository.
+
+5. **Step through the code**:
+
     Use the debugging controls in the GUI to step through the code and observe the interpreter's execution.
 
 ## Contributing
@@ -57,27 +73,41 @@ To run the Toy Language Interpreter, you need to have Java and Gradle installed 
 Contributions are welcome! If you have suggestions for improvements or want to add new features, feel free to fork the repository and create a pull request.
 
 1. **Fork the repository**:
+
     Click on the "Fork" button at the top right corner of this page.
 
-2. **Create a new branch**:
+2. # **Create a new branch**:
+
+    Click on the "Fork" button at the top right corner of this page.
+
+3. **Create a new branch**:
+
     ```bash
     git checkout -b my-feature-branch
     ```
 
-3. **Make your changes**:
+4. **Make your changes**:
+
     Implement your feature or fix the bug.
 
-4. **Commit your changes**:
+5. # **Commit your changes**:
+
+    Implement your feature or fix the bug.
+
+6. **Commit your changes**:
+
     ```bash
     git commit -m "Add my new feature"
     ```
 
-5. **Push to your branch**:
+7. **Push to your branch**:
+
     ```bash
     git push origin my-feature-branch
     ```
 
-6. **Create a pull request**:
+8. **Create a pull request**:
+
     Click on the "New Pull Request" button on the repository page.
 
 ## License
