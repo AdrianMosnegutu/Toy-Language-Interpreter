@@ -8,6 +8,7 @@ A toy language interpreter made in Java, together with a user-friendly interface
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -54,6 +55,16 @@ To run the Toy Language Interpreter, you need to have Java and Gradle installed 
 
 3. **Step through the code**:
    Use the debugging controls in the GUI to step through the code and observe the interpreter's execution.
+
+## Screenshots
+
+### Main Interface
+
+![Main Interface](screenshots/screenshot-1.png)
+
+### Debugging Example
+
+![Debugging Example](screenshots/screenshot-2.png)
 
 ## Contributing
 
