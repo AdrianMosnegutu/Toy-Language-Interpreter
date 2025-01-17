@@ -58,7 +58,6 @@ To run the Toy Language Interpreter, you need to have Java and Gradle installed 
 3. **Step through the code**:
 
     Use the debugging controls in the GUI to step through the code and observe the interpreter's execution.
-    After building the project, run the application using the command mentioned above.
 
 4. **Load a sample program**:
 
