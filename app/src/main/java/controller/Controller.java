@@ -33,21 +33,21 @@ public class Controller implements IController {
     }
 
     @Override
-    public void allStep(boolean display) {
+    public void runToCompletion(boolean display) {
         while (!repository.getProgramThreads().isEmpty()) {
-            oneStep();
+            executeOneStep();
         }
 
         executor.shutdownNow();
     }
 
     @Override
-    public ObservableList<ProgramState> getProgramStates() {
-        return repository.getProgramThreads(); 
+    public List<ProgramState> getProgramStates() {
+        return repository.getProgramThreads();
     }
 
     @Override
-    public void oneStep() {
+    public void executeOneStep() {
         executeGarbageCollector(repository.getProgramThreads());
         logAll(repository.getProgramThreads());
 

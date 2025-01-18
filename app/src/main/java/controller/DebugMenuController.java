@@ -2,14 +2,15 @@ package controller;
 
 import java.io.BufferedReader;
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.WeakListChangeListener;
+import javafx.collections.WeakMapChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -28,8 +29,6 @@ import model.values.IValue;
 import model.values.StringValue;
 
 public class DebugMenuController {
-    private IController controller;
-
     @FXML
     private Text programDescriptionText;
 
@@ -66,135 +65,51 @@ public class DebugMenuController {
     @FXML
     private ListView<String> outputList;
 
-    public void setProgramDescription(String programDescription) {
+    private IController controller;
+
+    private WeakListChangeListener<IStatement> executionStackListener;
+    private WeakMapChangeListener<String, IValue> symbolsTableListener;
+    private WeakListChangeListener<IValue> outputListListener;
+    private WeakMapChangeListener<StringValue, BufferedReader> fileTableListener;
+    private WeakMapChangeListener<Integer, IValue> heapListener;
+
+    public void updateProgramDescription(String programDescription) {
         programDescriptionText.setText(programDescription);
-    }
-
-    private void updateExecutionStackList(IExecutionStack executionStack) {
-        Platform.runLater(() -> {
-            executionStackList.setItems(FXCollections.observableArrayList(
-                    executionStack.getAll().reversed().stream()
-                            .map(IStatement::toString)
-                            .toList()));
-        });
-    }
-
-    private void updateSymbolsTable(ISymbolsTable symbolsTable) {
-        Platform.runLater(() -> {
-            ObservableList<Map.Entry<String, String>> variableEntries = FXCollections.observableArrayList(
-                    symbolsTable.getAll().entrySet().stream()
-                            .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
-                            .collect(Collectors.toList()));
-
-            variableNameColumn.setCellValueFactory(new PropertyValueFactory<>("key"));
-            variableValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-            variablesTable.setItems(variableEntries);
-        });
-    }
-
-    private void updateHeapTable(IHeap heap) {
-        Platform.runLater(() -> {
-            ObservableList<Map.Entry<Integer, String>> heapEntries = FXCollections.observableArrayList(
-                    heap.getAll().entrySet().stream()
-                            .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
-                            .collect(Collectors.toList()));
-
-            heapAddressColumn.setCellValueFactory(new PropertyValueFactory<>("key"));
-            heapValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-            heapTable.setItems(heapEntries);
-        });
-    }
-
-    private void updateFileList(IFileTable fileTable) {
-        Platform.runLater(() -> {
-            filesList.setItems(FXCollections.observableArrayList(fileTable.getAll().keySet().stream()
-                    .map(value -> value.toString()).toList()));
-        });
-    }
-
-    private void updateOutputList(IOutputList output) {
-        Platform.runLater(() -> {
-            outputList.setItems(FXCollections.observableArrayList(output.getAll().stream()
-                    .map(value -> value.toString()).toList()));
-        });
-    }
-
-    private void addListenersToState(ProgramState state) {
-        IExecutionStack executionStack = state.getExecutionStack();
-        ISymbolsTable symbolsTable = state.getSymbolsTable();
-        IFileTable fileTable = state.getFileTable();
-        IHeap heap = state.getHeap();
-        IOutputList output = state.getOutput();
-
-        executionStack.getAll().addListener(
-                (ListChangeListener<IStatement>) stackChange -> updateExecutionStackList(executionStack));
-        fileTable.getAll().addListener(
-                (MapChangeListener<StringValue, BufferedReader>) c -> updateFileList(fileTable));
-        symbolsTable.getAll().addListener(
-                (MapChangeListener<String, IValue>) c -> updateSymbolsTable(symbolsTable));
-        heap.getAll().addListener((MapChangeListener<Integer, IValue>) c -> updateHeapTable(heap));
-        output.getAll().addListener((ListChangeListener<IValue>) c -> updateOutputList(output));
-    }
-
-    private void removeListenersFromState(ProgramState state) {
-        IExecutionStack executionStack = state.getExecutionStack();
-        ISymbolsTable symbolsTable = state.getSymbolsTable();
-        IFileTable fileTable = state.getFileTable();
-        IHeap heap = state.getHeap();
-        IOutputList output = state.getOutput();
-
-        executionStack.getAll().removeListener(
-                (ListChangeListener<IStatement>) stackChange -> updateExecutionStackList(executionStack));
-        fileTable.getAll().removeListener(
-                (MapChangeListener<StringValue, BufferedReader>) c -> updateFileList(fileTable));
-        symbolsTable.getAll().removeListener(
-                (MapChangeListener<String, IValue>) c -> updateSymbolsTable(symbolsTable));
-        heap.getAll().removeListener((MapChangeListener<Integer, IValue>) c -> updateHeapTable(heap));
-        output.getAll().removeListener((ListChangeListener<IValue>) c -> updateOutputList(output));
     }
 
     public void setProgram(IStatement initialProgram) {
         controller = new Controller(new ProgramState(initialProgram));
-        ObservableList<ProgramState> programStates = controller.getProgramStates();
+        List<ProgramState> programStates = controller.getProgramStates();
 
-        updateExecutionStackList(programStates.getFirst().getExecutionStack());
-        numberOfThreadsText.setText(String.format("%s", programStates.size()));
+        updateExecutionStackList(programStates.get(0).getExecutionStack());
+        numberOfThreadsText.setText(String.valueOf(programStates.size()));
         pidsList.setItems(FXCollections.observableArrayList(
-                programStates.stream().map(program -> program.getPid()).toList()));
+                programStates.stream().map(ProgramState::getPid).toList()));
 
-        pidsList.getSelectionModel().selectedItemProperty().addListener((obsrvable, oldValue, newValue) -> {
-            ObservableList<ProgramState> programStates2 = controller.getProgramStates();
-            int oldSelectedIndex = 0;
-
-            int selectedIndex = pidsList.getSelectionModel().getSelectedIndex();
-            if (selectedIndex < 0) {
-                selectedIndex = pidsList.getFocusModel().getFocusedIndex();
-            }
-
-            if (oldValue != null) {
-                try {
-                    oldSelectedIndex = programStates2.indexOf(
-                            programStates2.stream().findFirst().filter(state -> state.getPid() == oldValue).get());
-                } catch (Exception err) {
-                    oldSelectedIndex = selectedIndex;
-                }
-            }
-
-            ProgramState newState;
-            try {
-                newState = controller.getProgramStates().get(selectedIndex);
-            } catch (Exception err) {
+        pidsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
                 return;
             }
 
-            removeListenersFromState(controller.getProgramStates().get(oldSelectedIndex));
-            addListenersToState(controller.getProgramStates().get(selectedIndex));
+            ProgramState newState = controller.getProgramStates().stream()
+                    .filter(state -> state.getPid() == newValue)
+                    .findFirst()
+                    .orElse(null);
 
-            updateExecutionStackList(newState.getExecutionStack());
-            updateOutputList(newState.getOutput());
-            updateHeapTable(newState.getHeap());
-            updateSymbolsTable(newState.getSymbolsTable());
-            updateFileList(newState.getFileTable());
+            if (newState == null) {
+                return;
+            }
+
+            if (oldValue != null) {
+                removeListenersFromState(
+                        controller.getProgramStates().stream()
+                                .filter(state -> state.getPid() == oldValue)
+                                .findFirst()
+                                .orElse(null));
+            }
+
+            addListenersToState(newState);
+            updateUIForState(newState);
         });
 
         pidsList.getSelectionModel().select(0);
@@ -202,15 +117,111 @@ public class DebugMenuController {
 
     public void executeOneStep(ActionEvent e) {
         try {
-            controller.oneStep();
+            controller.executeOneStep();
         } catch (Exception err) {
             return;
         }
 
-        ObservableList<ProgramState> programStates = controller.getProgramStates();
-        numberOfThreadsText.setText(String.format("%s", programStates.size()));
-
+        List<ProgramState> programStates = controller.getProgramStates();
+        numberOfThreadsText.setText(String.valueOf(programStates.size()));
         pidsList.setItems(FXCollections.observableArrayList(
-                programStates.stream().map(program -> program.getPid()).toList()));
+                programStates.stream().map(ProgramState::getPid).toList()));
+    }
+
+    private void addListenersToState(ProgramState state) {
+        if (state == null) {
+            return;
+        }
+
+        IExecutionStack executionStack = state.getExecutionStack();
+        ISymbolsTable symbolsTable = state.getSymbolsTable();
+        IFileTable fileTable = state.getFileTable();
+        IHeap heap = state.getHeap();
+        IOutputList output = state.getOutput();
+
+        executionStackListener = new WeakListChangeListener<>(change -> updateExecutionStackList(executionStack));
+        symbolsTableListener = new WeakMapChangeListener<>(change -> updateSymbolsTable(symbolsTable));
+        outputListListener = new WeakListChangeListener<>(change -> updateOutputList(output));
+        fileTableListener = new WeakMapChangeListener<>(change -> updateFileList(fileTable));
+        heapListener = new WeakMapChangeListener<>(change -> updateHeapTable(heap));
+
+        executionStack.getAll().addListener(executionStackListener);
+        symbolsTable.getAll().addListener(symbolsTableListener);
+        output.getAll().addListener(outputListListener);
+        fileTable.getAll().addListener(fileTableListener);
+        heap.getAll().addListener(heapListener);
+    }
+
+    private void removeListenersFromState(ProgramState state) {
+        if (state == null) {
+            return;
+        }
+
+        IExecutionStack executionStack = state.getExecutionStack();
+        ISymbolsTable symbolsTable = state.getSymbolsTable();
+        IFileTable fileTable = state.getFileTable();
+        IHeap heap = state.getHeap();
+        IOutputList output = state.getOutput();
+
+        executionStack.getAll().removeListener(executionStackListener);
+        symbolsTable.getAll().removeListener(symbolsTableListener);
+        output.getAll().removeListener(outputListListener);
+        fileTable.getAll().removeListener(fileTableListener);
+        heap.getAll().removeListener(heapListener);
+    }
+
+    private void updateUIForState(ProgramState state) {
+        updateExecutionStackList(state.getExecutionStack());
+        updateOutputList(state.getOutput());
+        updateHeapTable(state.getHeap());
+        updateSymbolsTable(state.getSymbolsTable());
+        updateFileList(state.getFileTable());
+    }
+
+    private void updateExecutionStackList(IExecutionStack executionStack) {
+        updateListView(executionStackList,
+                executionStack.getAll().reversed().stream().map(IStatement::toString).toList());
+    }
+
+    private void updateSymbolsTable(ISymbolsTable symbolsTable) {
+        ObservableList<Map.Entry<String, String>> variableEntries = FXCollections.observableArrayList(
+                symbolsTable.getAll().entrySet().stream()
+                        .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
+                        .collect(Collectors.toList()));
+
+        updateTableView(variablesTable, variableEntries, variableNameColumn, variableValueColumn);
+    }
+
+    private void updateHeapTable(IHeap heap) {
+        ObservableList<Map.Entry<Integer, String>> heapEntries = FXCollections.observableArrayList(
+                heap.getAll().entrySet().stream()
+                        .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
+                        .collect(Collectors.toList()));
+
+        updateTableView(heapTable, heapEntries, heapAddressColumn, heapValueColumn);
+    }
+
+    private void updateFileList(IFileTable fileTable) {
+        updateListView(filesList, fileTable.getAll().keySet().stream().map(StringValue::toString).toList());
+    }
+
+    private void updateOutputList(IOutputList output) {
+        updateListView(outputList, output.getAll().stream().map(IValue::toString).toList());
+    }
+
+    private <T> void updateListView(ListView<T> listView, List<T> items) {
+        Platform.runLater(() -> listView.setItems(FXCollections.observableArrayList(items)));
+    }
+
+    private <K, V> void updateTableView(
+            TableView<Map.Entry<K, V>> tableView,
+            ObservableList<Map.Entry<K, V>> items,
+            TableColumn<Map.Entry<K, V>, String> column1,
+            TableColumn<Map.Entry<K, V>, String> column2) {
+        Platform.runLater(() -> {
+            tableView.setItems(items);
+            column1.setCellValueFactory(new PropertyValueFactory<>("key"));
+            column2.setCellValueFactory(new PropertyValueFactory<>("value"));
+        });
     }
 }

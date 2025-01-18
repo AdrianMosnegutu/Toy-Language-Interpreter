@@ -1,16 +1,17 @@
 package controller;
 
+import java.util.List;
+
 import exceptions.MyException;
-import javafx.collections.ObservableList;
 import model.states.ProgramState;
 
 public interface IController {
-    ObservableList<ProgramState> getProgramStates();
+    List<ProgramState> getProgramStates();
 
     /**
      * Executes one step of the program for all program threads.
      */
-    void oneStep();
+    void executeOneStep();
 
     /**
      * Executes all steps of the program.
@@ -18,5 +19,5 @@ public interface IController {
      * @param display a boolean indicating whether to display the steps.
      * @throws MyException if an error occurs during the execution of the steps.
      */
-    void allStep(boolean display);
+    void runToCompletion(boolean display);
 }

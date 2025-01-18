@@ -23,7 +23,7 @@ public class RunExampleCommand extends Command {
         exampleRan = true;
 
         try {
-            controller.allStep(true);
+            controller.runToCompletion(true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

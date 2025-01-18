@@ -96,7 +96,7 @@ public class MainMenuController {
         applicationTabs.getTabs().add(programDashboardTab);
         applicationTabs.getSelectionModel().select(numOfTabs);
 
-        controller.setProgramDescription(programDescriptions.get(selectedIndex));
+        controller.updateProgramDescription(programDescriptions.get(selectedIndex));
         controller.setProgram(programStatements.get(selectedIndex));
     }
 }
