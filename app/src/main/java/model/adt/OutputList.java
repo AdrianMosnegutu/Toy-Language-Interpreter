@@ -1,15 +1,14 @@
 package model.adt;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.values.IValue;
 
 public class OutputList implements IOutputList {
-    private final List<IValue> list;
+    private final ObservableList<IValue> list;
 
     public OutputList() {
-        list = new ArrayList<>();
+        list = FXCollections.observableArrayList();
     }
 
     @Override
@@ -18,8 +17,8 @@ public class OutputList implements IOutputList {
     }
 
     @Override
-    public List<IValue> getAll() {
-        return new ArrayList<>(list);
+    public ObservableList<IValue> getAll() {
+        return list;
     }
 
     @Override

@@ -4,34 +4,34 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import exceptions.FileException;
 import exceptions.MyException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.states.ProgramState;
 
 public class Repository implements IRepository {
     private String logFilePath = "program_state.log";
-    private List<ProgramState> programThreads;
+    private ObservableList<ProgramState> programThreads;
 
-    public Repository(ProgramState mainThread) {
-        this.programThreads = new ArrayList<>();
-        this.programThreads.add(mainThread);
+    public Repository(ProgramState mainState) {
+        programThreads = FXCollections.observableArrayList();
+        programThreads.add(mainState);
     }
 
     public Repository(ProgramState mainThread, String fileName) {
         this(mainThread);
-        this.logFilePath = fileName;
+        logFilePath = fileName;
     }
 
     @Override
-    public List<ProgramState> getProgramThreads() {
-        return new ArrayList<>(programThreads);
+    public ObservableList<ProgramState> getProgramThreads() {
+        return programThreads;
     }
 
     @Override
-    public void setProgramThreads(List<ProgramState> programThreads) {
+    public void setProgramThreads(ObservableList<ProgramState> programThreads) {
         this.programThreads = programThreads;
     }
 

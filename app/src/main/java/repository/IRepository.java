@@ -1,8 +1,7 @@
 package repository;
 
-import java.util.List;
-
 import exceptions.MyException;
+import javafx.collections.ObservableList;
 import model.states.ProgramState;
 
 public interface IRepository {
@@ -12,7 +11,7 @@ public interface IRepository {
      * @return a list of ProgramState objects representing the current program
      *         threads.
      */
-    List<ProgramState> getProgramThreads();
+    ObservableList<ProgramState> getProgramThreads();
 
     /**
      * Sets the list of program threads.
@@ -20,7 +19,7 @@ public interface IRepository {
      * @param programThreads the list of ProgramState objects representing the
      *                       program threads to be set
      */
-    void setProgramThreads(List<ProgramState> programThreads);
+    void setProgramThreads(ObservableList<ProgramState> programThreads);
 
     /**
      * Logs the current state of the program.

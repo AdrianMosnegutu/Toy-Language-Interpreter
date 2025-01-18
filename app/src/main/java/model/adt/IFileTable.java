@@ -1,9 +1,9 @@
 package model.adt;
 
 import java.io.BufferedReader;
-import java.util.List;
 
 import exceptions.UndefinedFileException;
+import javafx.collections.ObservableMap;
 import model.values.StringValue;
 
 public interface IFileTable {
@@ -47,10 +47,5 @@ public interface IFileTable {
      */
     void closeFile(StringValue fileName) throws UndefinedFileException;
 
-    /**
-     * Returns a list of all the names of the files that are currently open.
-     *
-     * @return a list of all the names of the files that are currently open
-     */
-    List<StringValue> getAll();
+    ObservableMap<StringValue, BufferedReader> getAll();
 }

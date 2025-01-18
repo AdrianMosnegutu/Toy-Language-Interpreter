@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import exceptions.NullReferenceException;
+import javafx.collections.ObservableMap;
 import model.values.IValue;
 
 public interface IHeap {
@@ -55,5 +56,5 @@ public interface IHeap {
      *
      * @return a map of all the addresses and their values in the heap
      */
-    Map<Integer, IValue> getAll();
+    ObservableMap<Integer, IValue> getAll();
 }

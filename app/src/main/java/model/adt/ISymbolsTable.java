@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import exceptions.UndefinedVariableException;
+import javafx.collections.ObservableMap;
 import model.values.IValue;
 
 public interface ISymbolsTable {
@@ -63,5 +64,5 @@ public interface ISymbolsTable {
      *
      * @return a map of all variable names and their values
      */
-    Map<String, IValue> getAll();
+    ObservableMap<String, IValue> getAll();
 }

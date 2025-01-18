@@ -1,12 +1,11 @@
 package controller;
 
-import java.util.List;
-
 import exceptions.MyException;
+import javafx.collections.ObservableList;
 import model.states.ProgramState;
 
 public interface IController {
-    List<ProgramState> getProgramStates();
+    ObservableList<ProgramState> getProgramStates();
 
     /**
      * Executes one step of the program for all program threads.

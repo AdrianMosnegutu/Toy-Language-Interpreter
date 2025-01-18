@@ -6,16 +6,18 @@ import java.util.Map;
 import java.util.Set;
 
 import exceptions.UndefinedVariableException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.values.IValue;
 
 public class SymbolsTable implements ISymbolsTable {
-    private final Map<String, IValue> map;
+    private final ObservableMap<String, IValue> map;
 
     public SymbolsTable() {
-        map = new HashMap<>();
+        map = FXCollections.observableHashMap(); 
     }
 
-    public SymbolsTable(Map<String, IValue> map) {
+    public SymbolsTable(ObservableMap<String, IValue> map) {
         this.map = map;
     }
 
@@ -52,12 +54,18 @@ public class SymbolsTable implements ISymbolsTable {
 
     @Override
     public SymbolsTable deepCopy() {
-        return new SymbolsTable(new HashMap<>(map));
+        ObservableMap<String, IValue> copy = FXCollections.observableHashMap();
+
+        for (Map.Entry<String, IValue> entry : map.entrySet()) {
+            copy.put(entry.getKey(), entry.getValue());
+        }
+        
+        return new SymbolsTable(copy);
     }
 
     @Override
-    public Map<String, IValue> getAll() {
-        return new HashMap<>(map);
+    public ObservableMap<String, IValue> getAll() {
+        return map;
     }
 
     @Override

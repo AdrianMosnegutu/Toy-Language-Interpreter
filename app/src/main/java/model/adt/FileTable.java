@@ -2,19 +2,17 @@ package model.adt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import exceptions.UndefinedFileException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.values.StringValue;
 
 public class FileTable implements IFileTable {
-    private final Map<StringValue, BufferedReader> map;
+    private final ObservableMap<StringValue, BufferedReader> map;
 
     public FileTable() {
-        map = new HashMap<>();
+        map = FXCollections.observableHashMap(); 
     }
 
     @Override
@@ -51,8 +49,8 @@ public class FileTable implements IFileTable {
     }
 
     @Override
-    public List<StringValue> getAll() {
-        return new ArrayList<>(map.keySet());
+    public ObservableMap<StringValue, BufferedReader> getAll() {
+        return map;
     }
 
     @Override

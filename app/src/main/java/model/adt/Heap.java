@@ -1,19 +1,19 @@
 package model.adt;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import exceptions.NullReferenceException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.values.IValue;
 
 public class Heap implements IHeap {
-    private Map<Integer, IValue> map;
+    private ObservableMap<Integer, IValue> map;
     private int currentFreeAddress = 1;
 
     public Heap() {
-        map = new HashMap<>();
+        map = FXCollections.observableHashMap();
     }
 
     @Override
@@ -58,8 +58,8 @@ public class Heap implements IHeap {
     }
 
     @Override
-    public Map<Integer, IValue> getAll() {
-        return new HashMap<>(map);
+    public ObservableMap<Integer, IValue> getAll() {
+        return map;
     }
 
     @Override

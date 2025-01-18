@@ -1,8 +1,7 @@
 package model.adt;
 
-import java.util.List;
-
 import exceptions.EmptyStackException;
+import javafx.collections.ObservableList;
 import model.statements.IStatement;
 
 public interface IExecutionStack {
@@ -28,10 +27,5 @@ public interface IExecutionStack {
      */
     boolean isEmpty();
 
-    /**
-     * Returns a list of all the statements in the execution stack.
-     *
-     * @return a list of all the statements in the execution stack
-     */
-    List<IStatement> getAll();
+    ObservableList<IStatement> getAll();
 }

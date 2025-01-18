@@ -1,32 +1,31 @@
 package model.adt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import exceptions.EmptyStackException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.statements.CompoundStatement;
 import model.statements.IStatement;
 
 public class ExecutionStack implements IExecutionStack {
-    private final Stack<IStatement> stack;
+    private final ObservableList<IStatement> stack;
 
     public ExecutionStack() {
-        stack = new Stack<>();
+        stack = FXCollections.observableArrayList();
     }
 
     @Override
     public IStatement pop() throws EmptyStackException {
-        if (stack.empty()) {
+        if (stack.isEmpty()) {
             throw new EmptyStackException();
         }
-        return stack.pop();
+        return stack.removeLast();
     }
 
     @Override
     public void push(IStatement item) {
-        stack.push(item);
+        stack.addLast(item);
     }
 
     @Override
@@ -35,8 +34,8 @@ public class ExecutionStack implements IExecutionStack {
     }
 
     @Override
-    public List<IStatement> getAll() {
-        return new ArrayList<>(stack);
+    public ObservableList<IStatement> getAll() {
+        return stack;
     }
 
     @Override

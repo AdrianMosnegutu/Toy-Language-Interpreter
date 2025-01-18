@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import exceptions.MyException;
 import exceptions.NullReferenceException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.adt.IHeap;
 import model.states.ProgramState;
 import model.values.IValue;
@@ -19,41 +21,37 @@ import repository.Repository;
 public class Controller implements IController {
     private final IRepository repository;
     private ExecutorService executor = null;
-    private List<ProgramState> programThreads;
 
     public Controller(ProgramState mainState) {
         repository = new Repository(mainState);
         executor = Executors.newFixedThreadPool(2);
-        programThreads = removeCompletedThreads(repository.getProgramThreads());
     }
 
     public Controller(ProgramState mainState, String logFilePath) {
         repository = new Repository(mainState, logFilePath);
         executor = Executors.newFixedThreadPool(2);
-        programThreads = removeCompletedThreads(repository.getProgramThreads());
     }
 
     @Override
     public void allStep(boolean display) {
-        while (!programThreads.isEmpty()) {
+        while (!repository.getProgramThreads().isEmpty()) {
             oneStep();
         }
 
         executor.shutdownNow();
-        repository.setProgramThreads(programThreads);
     }
 
     @Override
-    public List<ProgramState> getProgramStates() {
-        return repository.getProgramThreads();
+    public ObservableList<ProgramState> getProgramStates() {
+        return repository.getProgramThreads(); 
     }
 
     @Override
     public void oneStep() {
-        executeGarbageCollector(programThreads);
-        logAll(programThreads);
+        executeGarbageCollector(repository.getProgramThreads());
+        logAll(repository.getProgramThreads());
 
-        List<Callable<ProgramState>> callList = programThreads.stream()
+        List<Callable<ProgramState>> callList = repository.getProgramThreads().stream()
                 .map((program) -> (Callable<ProgramState>) (() -> program.oneStep()))
                 .collect(Collectors.toList());
 
@@ -75,12 +73,10 @@ public class Controller implements IController {
             return;
         }
 
-        programThreads.addAll(newProgramThreads);
+        repository.getProgramThreads().addAll(newProgramThreads);
+        logAll(repository.getProgramThreads());
 
-        logAll(programThreads);
-
-        repository.setProgramThreads(programThreads);
-        programThreads = removeCompletedThreads(programThreads);
+        repository.setProgramThreads(removeCompletedThreads(repository.getProgramThreads()));
     }
 
     private Set<Integer> getUnusedAddresses(List<ProgramState> programThreads) {
@@ -116,8 +112,9 @@ public class Controller implements IController {
         }));
     }
 
-    private List<ProgramState> removeCompletedThreads(List<ProgramState> programThreads) {
-        return programThreads.stream().filter((thread) -> !thread.isCompleted()).collect(Collectors.toList());
+    private ObservableList<ProgramState> removeCompletedThreads(List<ProgramState> programThreads) {
+        return FXCollections.observableArrayList(
+                programThreads.stream().filter((thread) -> !thread.isCompleted()).collect(Collectors.toList()));
     }
 
     private void logAll(List<ProgramState> programThreads) {

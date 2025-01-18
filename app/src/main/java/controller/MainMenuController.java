@@ -33,7 +33,7 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         programDescriptions = FXCollections.observableArrayList(
-                "Print a value",
+                "Print a value to the console",
                 "Perform arithmetic operations",
                 "Use the 'if' statement",
                 "Read data from a file",
@@ -42,7 +42,7 @@ public class MainMenuController {
                 "Write data to the heap",
                 "Use the garbage collector",
                 "Use the 'while' statement",
-                "Fork a new program thread");
+                "Create a parallel thread");
 
         programStatements = Arrays.asList(
                 ProgramExamples.printValueExample(),

@@ -1,7 +1,6 @@
 package model.adt;
 
-import java.util.List;
-
+import javafx.collections.ObservableList;
 import model.values.IValue;
 
 public interface IOutputList {
@@ -17,5 +16,5 @@ public interface IOutputList {
      *
      * @return a list of IValue objects representing the content of the output list.
      */
-    List<IValue> getAll();
+    ObservableList<IValue> getAll();
 }
