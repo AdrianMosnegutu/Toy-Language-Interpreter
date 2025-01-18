@@ -12,14 +12,29 @@ public class RefValue implements IValue {
         this.locationType = locationType;
     }
 
+    /**
+     * Return the address the reference points to.
+     *
+     * @return the address the reference points to.
+     */
     public int getAddress() {
         return this.address;
     }
 
+    /**
+     * Set the address the reference points to.
+     *
+     * @param address the new address 
+     */
     public void setAddress(int address) {
         this.address = address;
     }
 
+    /**
+     * Return the type of the value the reference points to.
+     *
+     * @return the type of the value the reference points to
+     */
     public IType getLocationType() {
         return this.locationType;
     }

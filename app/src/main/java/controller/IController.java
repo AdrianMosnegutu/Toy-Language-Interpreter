@@ -8,7 +8,10 @@ import model.states.ProgramState;
 public interface IController {
     List<ProgramState> getProgramStates();
 
-    void oneStepAllPrograms();
+    /**
+     * Executes one step of the program for all program threads.
+     */
+    void oneStep();
 
     /**
      * Executes all steps of the program.

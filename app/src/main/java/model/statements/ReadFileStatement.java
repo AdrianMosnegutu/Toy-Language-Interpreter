@@ -34,32 +34,31 @@ public class ReadFileStatement implements IStatement {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
         IFileTable fileTable = state.getFileTable();
 
-        // Check if the variable is defined
         if (!symbolsTable.isVariableDefined(variableName)) {
             throw new UndefinedVariableException(variableName);
         }
 
-        // Check if the variable is of type IntType
         IType variableType = symbolsTable.getVariableValue(variableName).getType();
         if (!variableType.equals(new IntType())) {
             throw new IncompatibleTypesException(new IntType(), variableType);
         }
 
-        // Check if the file is open
-        IValue value = expression.evaluate(symbolsTable, state.getHeap());
-        BufferedReader fileDescriptor = fileTable.getFile((StringValue) value);
+        IValue expressionValue = expression.evaluate(symbolsTable, state.getHeap());
+        BufferedReader fileDescriptor = fileTable.getFile((StringValue) expressionValue);
         if (fileDescriptor == null) {
-            throw new UndefinedFileException(((StringValue) value).getValue());
+            throw new UndefinedFileException(((StringValue) expressionValue).getValue());
         }
 
-        // Try to read a line from the file
+        String line;
+
         try {
-            String line = fileDescriptor.readLine();
-            int number = line != null ? Integer.parseInt(line) : 0;
-            symbolsTable.setVariableValue(variableName, new IntValue(number));
+            line = fileDescriptor.readLine();
         } catch (IOException e) {
             throw new FileException(e.getMessage());
         }
+
+        int number = line != null ? Integer.parseInt(line) : 0;
+        symbolsTable.setVariableValue(variableName, new IntValue(number));
 
         return null;
     }
@@ -68,11 +67,11 @@ public class ReadFileStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new StringType())) {
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new StringType())) {
             throw new IncompatibleTypesException(new StringType(), typeExp);
         }
+
+        return typeTable;
     }
 
     @Override

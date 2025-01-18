@@ -41,17 +41,12 @@ public class ProgramState {
         pid = generatePid();
     }
 
-    public ProgramState(
-            ISymbolsTable symbolsTable,
-            IOutputList output,
-            IFileTable fileTable,
-            IHeap heap,
-            IStatement initialProgram) {
+    public ProgramState(ProgramState other, IStatement initialProgram) {
         executionStack = new ExecutionStack();
-        this.symbolsTable = symbolsTable;
-        this.output = output;
-        this.fileTable = fileTable;
-        this.heap = heap;
+        this.symbolsTable = other.symbolsTable.deepCopy();
+        this.output = other.output;
+        this.fileTable = other.fileTable;
+        this.heap = other.heap;
         executionStack.push(initialProgram);
 
         pid = generatePid();

@@ -25,7 +25,6 @@ public class CloseReadFileStatement implements IStatement {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
         IFileTable fileTable = state.getFileTable();
 
-        // Check if the file is open
         StringValue fileName = (StringValue) expression.evaluate(symbolsTable, state.getHeap());
         if (fileTable.getFile(fileName) == null) {
             throw new UndefinedFileException(fileName.getValue());
@@ -39,11 +38,11 @@ public class CloseReadFileStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new StringType())) {
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new StringType())) {
             throw new IncompatibleTypesException(new StringType(), typeExp);
         }
+
+        return typeTable;
     }
 
     @Override

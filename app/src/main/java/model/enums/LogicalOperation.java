@@ -6,7 +6,7 @@ public enum LogicalOperation {
 
     public final String operation;
 
-    private LogicalOperation(String operation) {
+    private LogicalOperation(final String operation) {
         this.operation = operation;
     }
 

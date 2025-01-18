@@ -8,7 +8,7 @@ public enum ArithmeticOperation {
 
     public final char operation;
 
-    private ArithmeticOperation(char operation) {
+    private ArithmeticOperation(final char operation) {
         this.operation = operation;
     }
 

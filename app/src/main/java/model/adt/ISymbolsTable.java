@@ -58,5 +58,10 @@ public interface ISymbolsTable {
      */
     SymbolsTable deepCopy();
 
+    /**
+     * Returns a map of all variable names and their values.
+     *
+     * @return a map of all variable names and their values
+     */
     Map<String, IValue> getAll();
 }

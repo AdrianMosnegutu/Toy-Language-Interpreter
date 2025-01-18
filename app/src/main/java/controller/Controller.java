@@ -36,9 +36,7 @@ public class Controller implements IController {
     @Override
     public void allStep(boolean display) {
         while (!programThreads.isEmpty()) {
-            executeGarbageCollector(programThreads);
-            oneStepAll(programThreads);
-            programThreads = removeCompletedThreads(programThreads);
+            oneStep();
         }
 
         executor.shutdownNow();
@@ -51,12 +49,38 @@ public class Controller implements IController {
     }
 
     @Override
-    public void oneStepAllPrograms() {
-        if (!programThreads.isEmpty()) {
-            executeGarbageCollector(programThreads);
-            oneStepAll(programThreads);
-            programThreads = removeCompletedThreads(programThreads);
+    public void oneStep() {
+        executeGarbageCollector(programThreads);
+        logAll(programThreads);
+
+        List<Callable<ProgramState>> callList = programThreads.stream()
+                .map((program) -> (Callable<ProgramState>) (() -> program.oneStep()))
+                .collect(Collectors.toList());
+
+        List<ProgramState> newProgramThreads;
+        try {
+            newProgramThreads = executor.invokeAll(callList).stream()
+                    .map((future) -> {
+                        try {
+                            return future.get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .filter((programThread) -> programThread != null)
+                    .collect(Collectors.toList());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return;
         }
+
+        programThreads.addAll(newProgramThreads);
+
+        logAll(programThreads);
+
+        repository.setProgramThreads(programThreads);
+        programThreads = removeCompletedThreads(programThreads);
     }
 
     private Set<Integer> getUnusedAddresses(List<ProgramState> programThreads) {
@@ -105,41 +129,5 @@ public class Controller implements IController {
                 return;
             }
         });
-    }
-
-    private void oneStepAll(List<ProgramState> programThreads) {
-        logAll(programThreads);
-
-        // Create a list of callables for each program thread
-        List<Callable<ProgramState>> callList = programThreads.stream()
-                .map((program) -> (Callable<ProgramState>) (() -> program.oneStep()))
-                .collect(Collectors.toList());
-
-        // Execute all callables and collect the results
-        List<ProgramState> newProgramThreads;
-        try {
-            newProgramThreads = executor.invokeAll(callList).stream()
-                    .map((future) -> {
-                        try {
-                            return future.get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    })
-                    .filter((programThread) -> programThread != null)
-                    .collect(Collectors.toList());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // Add the new program threads to the list
-        programThreads.addAll(newProgramThreads);
-
-        logAll(programThreads);
-
-        // Save the current program threads
-        repository.setProgramThreads(programThreads);
     }
 }

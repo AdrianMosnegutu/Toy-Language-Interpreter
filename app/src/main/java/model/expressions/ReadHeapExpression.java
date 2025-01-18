@@ -26,11 +26,12 @@ public class ReadHeapExpression implements IExpression {
     @Override
     public IType typecheck(Map<String, IType> typeTable) throws MyException {
         IType type = expression.typecheck(typeTable);
-        if (type instanceof RefType) {
-            return ((RefType) type).getInner();
-        } else {
+
+        if (!(type instanceof RefType)) {
             throw new IncompatibleTypesException(new RefType(), type);
         }
+
+        return ((RefType) type).getInner();
     }
 
     @Override

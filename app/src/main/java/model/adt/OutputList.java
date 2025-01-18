@@ -18,7 +18,7 @@ public class OutputList implements IOutputList {
     }
 
     @Override
-    public List<IValue> getContent() {
+    public List<IValue> getAll() {
         return new ArrayList<>(list);
     }
 

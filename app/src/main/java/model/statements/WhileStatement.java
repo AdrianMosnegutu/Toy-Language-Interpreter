@@ -25,9 +25,8 @@ public class WhileStatement implements IStatement {
     public ProgramState execute(ProgramState state) throws MyException {
         IExecutionStack executionStack = state.getExecutionStack();
 
-        // Push the inner statement on the stack if the condition is met, followed by
-        // the while statement itself to allow for multiple iterations
-        if (((BoolValue) expression.evaluate(state.getSymbolsTable(), state.getHeap())).getValue()) {
+        BoolValue expressionValue = (BoolValue) expression.evaluate(state.getSymbolsTable(), state.getHeap());
+        if (expressionValue.getValue()) {
             executionStack.push(this);
             executionStack.push(inner);
         }
@@ -40,11 +39,11 @@ public class WhileStatement implements IStatement {
         inner.typecheck(new HashMap<>(typeTable));
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new BoolType())) {
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new BoolType())) {
             throw new IncompatibleTypesException(new BoolType(), typeExp);
         }
+
+        return typeTable;
     }
 
     @Override

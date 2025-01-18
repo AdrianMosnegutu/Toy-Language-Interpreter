@@ -29,8 +29,8 @@ public class IfStatement implements IStatement {
         IExecutionStack executionStack = state.getExecutionStack();
         ISymbolsTable symbolsTable = state.getSymbolsTable();
 
-        Boolean conditionMet = ((BoolValue) expression.evaluate(symbolsTable, state.getHeap())).getValue();
-        executionStack.push(conditionMet ? then : otherwise);
+        Boolean isConditionMet = ((BoolValue) expression.evaluate(symbolsTable, state.getHeap())).getValue();
+        executionStack.push(isConditionMet ? then : otherwise);
 
         return null;
     }
@@ -39,13 +39,14 @@ public class IfStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new BoolType())) {
-            then.typecheck(new HashMap<>(typeTable));
-            otherwise.typecheck(new HashMap<>(typeTable));
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new BoolType())) {
             throw new IncompatibleTypesException(new BoolType(), typeExp);
         }
+
+        then.typecheck(new HashMap<>(typeTable));
+        otherwise.typecheck(new HashMap<>(typeTable));
+
+        return typeTable;
     }
 
     @Override

@@ -47,5 +47,10 @@ public interface IFileTable {
      */
     void closeFile(StringValue fileName) throws UndefinedFileException;
 
+    /**
+     * Returns a list of all the names of the files that are currently open.
+     *
+     * @return a list of all the names of the files that are currently open
+     */
     List<StringValue> getAll();
 }

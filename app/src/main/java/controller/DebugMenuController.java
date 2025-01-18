@@ -22,7 +22,7 @@ import model.adt.ISymbolsTable;
 import model.statements.IStatement;
 import model.states.ProgramState;
 
-public class ProgramDashboardController {
+public class DebugMenuController {
     private IController controller;
 
     private void update(ProgramState program) {
@@ -56,7 +56,7 @@ public class ProgramDashboardController {
         filesList.setItems(FXCollections.observableArrayList(fileTable.getAll().stream()
                 .map(value -> value.toString()).toList()));
 
-        outputList.setItems(FXCollections.observableArrayList(output.getContent().stream()
+        outputList.setItems(FXCollections.observableArrayList(output.getAll().stream()
                 .map(value -> value.toString()).toList()));
     }
 
@@ -121,10 +121,16 @@ public class ProgramDashboardController {
     private ListView<String> outputList;
 
     public void executeOneStep(ActionEvent e) {
-        controller.oneStepAllPrograms();
+        List<ProgramState> programStates = controller.getProgramStates();
+
+        if (programStates.isEmpty()) {
+            return;
+        }
+
+        controller.oneStep();
         update(controller.getProgramStates().getFirst());
 
-        List<ProgramState> programStates = controller.getProgramStates();
+        programStates = controller.getProgramStates();
         numberOfThreadsText.setText(String.format("%s", programStates.size()));
         pidsList.setItems(
                 FXCollections.observableArrayList(programStates.stream().map(program -> program.getPid()).toList()));

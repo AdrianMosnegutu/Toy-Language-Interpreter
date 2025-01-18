@@ -28,5 +28,10 @@ public interface IExecutionStack {
      */
     boolean isEmpty();
 
+    /**
+     * Returns a list of all the statements in the execution stack.
+     *
+     * @return a list of all the statements in the execution stack
+     */
     List<IStatement> getAll();
 }

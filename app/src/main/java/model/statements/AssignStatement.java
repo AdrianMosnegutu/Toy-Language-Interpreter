@@ -24,13 +24,12 @@ public class AssignStatement implements IStatement {
     public ProgramState execute(ProgramState state) throws MyException {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
 
-        // Check if the variable is defined
         if (!symbolsTable.isVariableDefined(variableName)) {
             throw new UndefinedVariableException(variableName);
         }
 
-        IValue expressionResult = assignedExpression.evaluate(symbolsTable, state.getHeap());
-        symbolsTable.setVariableValue(variableName, expressionResult);
+        IValue expressionValue = assignedExpression.evaluate(symbolsTable, state.getHeap());
+        symbolsTable.setVariableValue(variableName, expressionValue);
 
         return null;
     }
@@ -40,11 +39,11 @@ public class AssignStatement implements IStatement {
         IType typeVar = typeTable.get(variableName);
         IType typeExp = assignedExpression.typecheck(typeTable);
 
-        if (typeVar.equals(typeExp)) {
-            return typeTable;
-        } else {
+        if (!typeVar.equals(typeExp)) {
             throw new IncompatibleTypesException(typeVar, typeExp);
         }
+
+        return typeTable;
     }
 
     @Override

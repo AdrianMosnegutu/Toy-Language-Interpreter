@@ -11,7 +11,7 @@ public class Interpreter extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Interpreter.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("Toy Language Interpreter");

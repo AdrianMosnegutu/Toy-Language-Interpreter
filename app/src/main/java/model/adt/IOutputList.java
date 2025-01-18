@@ -17,5 +17,5 @@ public interface IOutputList {
      *
      * @return a list of IValue objects representing the content of the output list.
      */
-    List<IValue> getContent();
+    List<IValue> getAll();
 }

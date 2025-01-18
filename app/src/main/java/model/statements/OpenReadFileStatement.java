@@ -30,13 +30,11 @@ public class OpenReadFileStatement implements IStatement {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
         IFileTable fileTable = state.getFileTable();
 
-        // Check if the file is already open
         StringValue fileName = (StringValue) expression.evaluate(symbolsTable, state.getHeap());
         if (fileTable.isOpen(fileName)) {
             throw new FileAlreadyOpenedException(fileName);
         }
 
-        // Try to open the file
         try {
             fileTable.setFile(fileName, new BufferedReader(new FileReader(fileName.getValue())));
         } catch (FileNotFoundException e) {
@@ -52,11 +50,11 @@ public class OpenReadFileStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new StringType())) {
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new StringType())) {
             throw new IncompatibleTypesException(new StringType(), typeExp);
         }
+
+        return typeTable;
     }
 
     public IStatement deepCopy() {

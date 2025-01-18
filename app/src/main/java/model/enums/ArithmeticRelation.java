@@ -10,7 +10,7 @@ public enum ArithmeticRelation {
 
     public final String expression;
 
-    private ArithmeticRelation(String expression) {
+    private ArithmeticRelation(final String expression) {
         this.expression = expression;
     }
 

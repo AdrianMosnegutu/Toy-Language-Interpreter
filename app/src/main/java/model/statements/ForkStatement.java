@@ -16,12 +16,7 @@ public class ForkStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
-        return new ProgramState(
-                state.getSymbolsTable().deepCopy(),
-                state.getOutput(),
-                state.getFileTable(),
-                state.getHeap(),
-                inner);
+        return new ProgramState(state, inner);
     }
 
     @Override

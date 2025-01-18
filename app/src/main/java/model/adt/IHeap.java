@@ -50,5 +50,10 @@ public interface IHeap {
      */
     void deallocate(int address) throws NullReferenceException;
 
+    /**
+     * Returns a map of all the addresses and their values in the heap.
+     *
+     * @return a map of all the addresses and their values in the heap
+     */
     Map<Integer, IValue> getAll();
 }

@@ -17,7 +17,7 @@ import javafx.scene.input.KeyCode;
 import model.statements.IStatement;
 import model.states.ProgramExamples;
 
-public class InterpreterController {
+public class MainMenuController {
     private ObservableList<String> programDescriptions;
     private List<IStatement> programStatements;
 
@@ -56,19 +56,15 @@ public class InterpreterController {
                 ProgramExamples.whileStatementExample(),
                 ProgramExamples.forkStatementExample());
 
-        // Populate the examples list.
         examplesList.setItems(programDescriptions);
 
-        // Make it so that when an example is selected, the right pane displays a preview of the program.
         examplesList.getSelectionModel().selectedItemProperty().addListener((obsrvable, oldValue, newValue) -> {
             int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
             codePreview.setText(programStatements.get(selectedIndex).toString());
         });
 
-        // By default, select the first example at application start
         examplesList.getSelectionModel().select(0);
 
-        // Make it so that when the 'ENTER' key is pressed, the application starts the selected example program.
         examplesList.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 selectExample(null);
@@ -78,13 +74,12 @@ public class InterpreterController {
 
     @FXML
     public void selectExample(ActionEvent e) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ProgramDashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../DebugMenu.fxml"));
 
         Node programDashboard;
-        ProgramDashboardController controller;
+        DebugMenuController controller;
 
         try {
-            // Load the dashboard fxml file and get its controller
             programDashboard = loader.load();
             controller = loader.getController();
         } catch (Exception err) {
@@ -95,15 +90,12 @@ public class InterpreterController {
         int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
         int numOfTabs = applicationTabs.getTabs().size();
 
-        // Create a new tab for displaying the current example program information
         Tab programDashboardTab = new Tab(programDescriptions.get(selectedIndex), programDashboard);
         programDashboardTab.setClosable(true);
 
-        // Add the new tab and select it 
         applicationTabs.getTabs().add(programDashboardTab);
         applicationTabs.getSelectionModel().select(numOfTabs);
 
-        // In the example program's controller, assign the program description and its statement.
         controller.setProgramDescription(programDescriptions.get(selectedIndex));
         controller.setProgram(programStatements.get(selectedIndex));
     }

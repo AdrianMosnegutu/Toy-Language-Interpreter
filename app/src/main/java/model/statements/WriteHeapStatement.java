@@ -29,18 +29,17 @@ public class WriteHeapStatement implements IStatement {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
         IHeap heap = state.getHeap();
 
-        // Check if the variable is defined
         if (!symbolsTable.isVariableDefined(variableName)) {
             throw new UndefinedVariableException(variableName);
         }
 
-        // Check if the variable is of type RefType
-        IValue value = symbolsTable.getVariableValue(variableName);
-        if (!value.getType().equals(new RefType())) {
-            throw new IncompatibleTypesException(new RefType(), value.getType());
+        IValue variableValue = symbolsTable.getVariableValue(variableName);
+        if (!variableValue.getType().equals(new RefType())) {
+            throw new IncompatibleTypesException(new RefType(), variableValue.getType());
         }
 
-        heap.setValueAt(((RefValue) value).getAddress(), expression.evaluate(symbolsTable, heap));
+        heap.setValueAt(((RefValue) variableValue).getAddress(), expression.evaluate(symbolsTable, heap));
+
         return null;
     }
 
@@ -48,11 +47,11 @@ public class WriteHeapStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (typeExp.equals(new IntType())) {
-            return typeTable;
-        } else {
+        if (!typeExp.equals(new IntType())) {
             throw new IncompatibleTypesException(new IntType(), typeExp);
         }
+
+        return typeTable;
     }
 
     @Override

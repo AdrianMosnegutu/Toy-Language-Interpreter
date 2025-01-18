@@ -21,12 +21,12 @@ public class VariableDeclarationStatement implements IStatement {
     public ProgramState execute(ProgramState state) throws MyException {
         ISymbolsTable symbolsTable = state.getSymbolsTable();
 
-        // Check if the variable is already defined
         if (symbolsTable.isVariableDefined(variableName)) {
             throw new VariableExistsException(variableName);
         }
 
         symbolsTable.setVariableValue(variableName, variableType.defaultValue());
+
         return null;
     }
 
