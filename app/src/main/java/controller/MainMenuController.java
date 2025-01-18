@@ -19,7 +19,10 @@ import model.states.ProgramExamples;
 
 public class MainMenuController {
     private ObservableList<String> programDescriptions;
+    private List<String> programLogFiles;
     private List<IStatement> programStatements;
+
+    final String logsDirectoryPath = "build/logs/";
 
     @FXML
     private TabPane applicationTabs;
@@ -43,6 +46,18 @@ public class MainMenuController {
                 "Use the garbage collector",
                 "Use the 'while' statement",
                 "Create a parallel thread");
+
+        programLogFiles = Arrays.asList(
+                "printValue.log",
+                "arithmeticOperations.log",
+                "ifStatement.log",
+                "readFile.log",
+                "allocateHeap.log",
+                "readHeap.log",
+                "writeHeap.log",
+                "garbageCollector.log",
+                "whileStatement.log",
+                "forkStatement.log");
 
         programStatements = Arrays.asList(
                 ProgramExamples.printValueExample(),
@@ -97,6 +112,7 @@ public class MainMenuController {
         applicationTabs.getSelectionModel().select(numOfTabs);
 
         controller.updateProgramDescription(programDescriptions.get(selectedIndex));
-        controller.setProgram(programStatements.get(selectedIndex));
+        controller.setProgram(programStatements.get(selectedIndex),
+                logsDirectoryPath + programLogFiles.get(selectedIndex));
     }
 }

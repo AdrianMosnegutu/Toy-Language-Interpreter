@@ -77,8 +77,8 @@ public class DebugMenuController {
         programDescriptionText.setText(programDescription);
     }
 
-    public void setProgram(IStatement initialProgram) {
-        controller = new Controller(new ProgramState(initialProgram));
+    public void setProgram(IStatement initialProgram, String logFilePath) {
+        controller = new Controller(new ProgramState(initialProgram), logFilePath);
         List<ProgramState> programStates = controller.getProgramStates();
 
         updateExecutionStackList(programStates.getFirst().getExecutionStack());

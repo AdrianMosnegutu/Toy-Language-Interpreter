@@ -12,7 +12,7 @@ import exceptions.MyException;
 import model.states.ProgramState;
 
 public class Repository implements IRepository {
-    private String logFilePath = "program_state.log";
+    private String logFilePath = "build/logs/program_state.log";
     private List<ProgramState> programThreads;
 
     public Repository(ProgramState mainState) {
