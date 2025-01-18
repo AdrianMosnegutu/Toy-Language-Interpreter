@@ -81,7 +81,7 @@ public class DebugMenuController {
         controller = new Controller(new ProgramState(initialProgram));
         List<ProgramState> programStates = controller.getProgramStates();
 
-        updateExecutionStackList(programStates.get(0).getExecutionStack());
+        updateExecutionStackList(programStates.getFirst().getExecutionStack());
         numberOfThreadsText.setText(String.valueOf(programStates.size()));
         pidsList.setItems(FXCollections.observableArrayList(
                 programStates.stream().map(ProgramState::getPid).toList()));
@@ -124,8 +124,7 @@ public class DebugMenuController {
 
         List<ProgramState> programStates = controller.getProgramStates();
         numberOfThreadsText.setText(String.valueOf(programStates.size()));
-        pidsList.setItems(FXCollections.observableArrayList(
-                programStates.stream().map(ProgramState::getPid).toList()));
+        pidsList.setItems(FXCollections.observableArrayList(programStates.stream().map(ProgramState::getPid).toList()));
     }
 
     private void addListenersToState(ProgramState state) {
@@ -220,8 +219,12 @@ public class DebugMenuController {
             TableColumn<Map.Entry<K, V>, String> column2) {
         Platform.runLater(() -> {
             tableView.setItems(items);
+
             column1.setCellValueFactory(new PropertyValueFactory<>("key"));
+            column1.prefWidthProperty().bind(tableView.widthProperty().multiply(0.49666));
+
             column2.setCellValueFactory(new PropertyValueFactory<>("value"));
+            column2.prefWidthProperty().bind(tableView.widthProperty().multiply(0.49666));
         });
     }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER_RIGHT" prefHeight="700.0" prefWidth="960.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DebugMenuController">
+<VBox alignment="CENTER_RIGHT" prefHeight="750.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DebugMenuController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -30,7 +30,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="960.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Number of threads:">
+                        <Label text="Number of active threads:">
                            <font>
                               <Font name="Roboto" size="18.0" />
                            </font>
@@ -99,10 +99,10 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="variablesTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="variablesTable" prefHeight="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="variableNameColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Name" />
-                        <TableColumn fx:id="variableValueColumn" editable="false" prefWidth="75.0" text="Value" />
+                        <TableColumn fx:id="variableNameColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="Name" />
+                        <TableColumn fx:id="variableValueColumn" editable="false" prefWidth="100.0" text="Value" />
                      </columns>
                   </TableView>
                </children>
@@ -122,8 +122,8 @@
                   </Label>
                   <TableView fx:id="heapTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="heapAddressColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Address" />
-                        <TableColumn fx:id="heapValueColumn" editable="false" prefWidth="75.0" text="Value" />
+                        <TableColumn fx:id="heapAddressColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="Address" />
+                        <TableColumn fx:id="heapValueColumn" editable="false" prefWidth="100.0" text="Value" />
                      </columns>
                   </TableView>
                </children>
