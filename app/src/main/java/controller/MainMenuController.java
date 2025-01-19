@@ -42,39 +42,54 @@ public class MainMenuController {
                 "Print a value to the console",
                 "Perform arithmetic operations",
                 "Use the 'if' statement",
+                "Use the 'switch case' statement",
                 "Read data from a file",
                 "Allocate data to the heap",
                 "Read data from the heap",
                 "Write data to the heap",
                 "Use the garbage collector",
                 "Use the 'while' statement",
+                "Use the 'repeat until' statement",
+                "Use the 'for' statement",
+                "Use conditional assignment",
+                "Use the 'sleep' statement",
                 "Create a parallel thread");
 
         programLogFiles = new ArrayList<>(Arrays.asList(
                 "printValue.log",
                 "arithmeticOperations.log",
                 "ifStatement.log",
+                "switchCaseStatement.log",
                 "readFile.log",
                 "allocateHeap.log",
                 "readHeap.log",
                 "writeHeap.log",
                 "garbageCollector.log",
                 "whileStatement.log",
+                "repeatUntilStatement.log",
+                "forStatement.log",
+                "conditionalAssignment.log",
+                "sleepStatement.log",
                 "forkStatement.log"));
 
         programStatements = new ArrayList<>(Arrays.asList(
                 ProgramExamples.printValueExample(),
                 ProgramExamples.arithmeticOperationsExample(),
                 ProgramExamples.ifStatementExample(),
+                ProgramExamples.switchCaseExample(),
                 ProgramExamples.readFromFileExample(),
                 ProgramExamples.allocateToHeapExample(),
                 ProgramExamples.readFromHeapExample(),
                 ProgramExamples.writeToHeapExample(),
                 ProgramExamples.garbageCollectorExample(),
                 ProgramExamples.whileStatementExample(),
+                ProgramExamples.repeatUntilExample(),
+                ProgramExamples.forStatementExample(),
+                ProgramExamples.conditionalAssignmentExample(),
+                ProgramExamples.sleepStatementExample(),
                 ProgramExamples.forkStatementExample()));
 
-        typecheckExamples();
+        // typecheckExamples();
 
         examplesList.setItems(programDescriptions);
 

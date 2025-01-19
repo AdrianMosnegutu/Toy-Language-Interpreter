@@ -37,10 +37,10 @@ public class IfStatement implements IStatement {
 
     @Override
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
-        IType typeExp = expression.typecheck(typeTable);
+        IType expressionType = expression.typecheck(typeTable);
 
-        if (!typeExp.equals(new BoolType())) {
-            throw new IncompatibleTypesException(new BoolType(), typeExp);
+        if (expressionType != null && !expressionType.equals(new BoolType())) {
+            throw new IncompatibleTypesException(new BoolType(), expressionType);
         }
 
         then.typecheck(new HashMap<>(typeTable));

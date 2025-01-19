@@ -65,10 +65,10 @@ public class ReadFileStatement implements IStatement {
 
     @Override
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
-        IType typeExp = expression.typecheck(typeTable);
+        IType expressionType = expression.typecheck(typeTable);
 
-        if (!typeExp.equals(new StringType())) {
-            throw new IncompatibleTypesException(new StringType(), typeExp);
+        if (expressionType != null && !expressionType.equals(new StringType())) {
+            throw new IncompatibleTypesException(new StringType(), expressionType);
         }
 
         return typeTable;

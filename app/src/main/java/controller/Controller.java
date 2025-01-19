@@ -51,7 +51,6 @@ public class Controller implements IController {
         List<ProgramState> programThreads = repository.getProgramThreads();
 
         executeGarbageCollector(programThreads);
-        logAll(programThreads);
 
         List<Callable<ProgramState>> callList = programThreads.stream()
                 .map((program) -> (Callable<ProgramState>) (() -> program.oneStep()))

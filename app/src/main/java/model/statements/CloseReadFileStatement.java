@@ -38,7 +38,7 @@ public class CloseReadFileStatement implements IStatement {
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
         IType typeExp = expression.typecheck(typeTable);
 
-        if (!typeExp.equals(new StringType())) {
+        if (typeExp != null && !typeExp.equals(new StringType())) {
             throw new IncompatibleTypesException(new StringType(), typeExp);
         }
 

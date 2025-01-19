@@ -45,10 +45,10 @@ public class WriteHeapStatement implements IStatement {
 
     @Override
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
-        IType typeExp = expression.typecheck(typeTable);
+        IType expressionType = expression.typecheck(typeTable);
 
-        if (!typeExp.equals(new IntType())) {
-            throw new IncompatibleTypesException(new IntType(), typeExp);
+        if (expressionType != null && !expressionType.equals(new IntType())) {
+            throw new IncompatibleTypesException(new IntType(), expressionType);
         }
 
         return typeTable;

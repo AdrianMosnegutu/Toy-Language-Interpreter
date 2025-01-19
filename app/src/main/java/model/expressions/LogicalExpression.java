@@ -46,11 +46,11 @@ public class LogicalExpression implements IExpression {
         IType type1 = operand1.typecheck(typeTable);
         IType type2 = operand2.typecheck(typeTable);
 
-        if (!type1.equals(new BoolType())) {
+        if (type1 != null && !type1.equals(new BoolType())) {
             throw new IncompatibleTypesException(new BoolType(), type1);
         }
 
-        if (!type2.equals(new BoolType())) {
+        if (type2 != null && !type2.equals(new BoolType())) {
             throw new IncompatibleTypesException(new BoolType(), type2);
         }
 

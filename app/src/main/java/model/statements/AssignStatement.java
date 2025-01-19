@@ -39,7 +39,7 @@ public class AssignStatement implements IStatement {
         IType typeVar = typeTable.get(variableName);
         IType typeExp = assignedExpression.typecheck(typeTable);
 
-        if (!typeVar.equals(typeExp)) {
+        if (typeExp != null && !typeVar.equals(typeExp)) {
             throw new IncompatibleTypesException(typeVar, typeExp);
         }
 
