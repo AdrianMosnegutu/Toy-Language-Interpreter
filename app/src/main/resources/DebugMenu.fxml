@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER_RIGHT" prefHeight="750.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DebugMenuController">
+<VBox alignment="CENTER_RIGHT" prefHeight="900.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DebugMenuController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -30,14 +30,14 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="960.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Number of active threads:">
+                        <Label text="Selected thread PID:">
                            <font>
                               <Font name="Roboto" size="18.0" />
                            </font>
                         </Label>
-                        <Text fx:id="numberOfThreadsText" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                        <Text fx:id="selectedThreadPidText" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
                            <font>
-                              <Font name="Roboto" size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Text>
                      </children>

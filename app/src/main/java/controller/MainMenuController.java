@@ -1,8 +1,11 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import exceptions.MyException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,7 +50,7 @@ public class MainMenuController {
                 "Use the 'while' statement",
                 "Create a parallel thread");
 
-        programLogFiles = Arrays.asList(
+        programLogFiles = new ArrayList<>(Arrays.asList(
                 "printValue.log",
                 "arithmeticOperations.log",
                 "ifStatement.log",
@@ -57,9 +60,9 @@ public class MainMenuController {
                 "writeHeap.log",
                 "garbageCollector.log",
                 "whileStatement.log",
-                "forkStatement.log");
+                "forkStatement.log"));
 
-        programStatements = Arrays.asList(
+        programStatements = new ArrayList<>(Arrays.asList(
                 ProgramExamples.printValueExample(),
                 ProgramExamples.arithmeticOperationsExample(),
                 ProgramExamples.ifStatementExample(),
@@ -69,7 +72,9 @@ public class MainMenuController {
                 ProgramExamples.writeToHeapExample(),
                 ProgramExamples.garbageCollectorExample(),
                 ProgramExamples.whileStatementExample(),
-                ProgramExamples.forkStatementExample());
+                ProgramExamples.forkStatementExample()));
+
+        typecheckExamples();
 
         examplesList.setItems(programDescriptions);
 
@@ -77,7 +82,6 @@ public class MainMenuController {
             int selectedIndex = examplesList.getSelectionModel().getSelectedIndex();
             codePreview.setText(programStatements.get(selectedIndex).toString());
         });
-
         examplesList.getSelectionModel().select(0);
 
         examplesList.setOnKeyPressed(event -> {
@@ -114,5 +118,24 @@ public class MainMenuController {
         controller.updateProgramDescription(programDescriptions.get(selectedIndex));
         controller.setProgram(programStatements.get(selectedIndex),
                 logsDirectoryPath + programLogFiles.get(selectedIndex));
+    }
+
+    private void typecheckExamples() {
+        for (int index = 0; index < programStatements.size(); ++index) {
+            try {
+                programStatements.get(index).typecheck(new HashMap<>());
+            } catch (MyException e) {
+                System.out.println();
+                System.out.println(String.format("Type error for example '%s'", programDescriptions.get(index)));
+                System.out.println(e);
+                System.out.println();
+
+                programDescriptions.remove(index);
+                programLogFiles.remove(index);
+                programStatements.remove(index);
+
+                index--;
+            }
+        }
     }
 }

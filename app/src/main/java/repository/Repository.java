@@ -26,8 +26,13 @@ public class Repository implements IRepository {
     }
 
     @Override
+    public boolean isEmpty() {
+        return programThreads.isEmpty();
+    }
+
+    @Override
     public List<ProgramState> getProgramThreads() {
-        return programThreads;
+        return new ArrayList<>(programThreads);
     }
 
     @Override

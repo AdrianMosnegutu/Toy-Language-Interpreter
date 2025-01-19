@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
@@ -33,7 +34,7 @@ public class DebugMenuController {
     private Text programDescriptionText;
 
     @FXML
-    private Text numberOfThreadsText;
+    private Text selectedThreadPidText;
 
     @FXML
     private ListView<Integer> pidsList;
@@ -78,20 +79,21 @@ public class DebugMenuController {
     }
 
     public void setProgram(IStatement initialProgram, String logFilePath) {
-        controller = new Controller(new ProgramState(initialProgram), logFilePath);
-        List<ProgramState> programStates = controller.getProgramStates();
+        ProgramState initialState = new ProgramState(initialProgram);
+        controller = new Controller(initialState, logFilePath);
 
-        updateExecutionStackList(programStates.getFirst().getExecutionStack());
-        numberOfThreadsText.setText(String.valueOf(programStates.size()));
+        updateExecutionStackList(initialState.getExecutionStack());
         pidsList.setItems(FXCollections.observableArrayList(
-                programStates.stream().map(ProgramState::getPid).toList()));
+                controller.getProgramStates().stream().map(ProgramState::getPid).toList()));
 
         pidsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
             }
 
-            ProgramState newState = controller.getProgramStates().stream()
+            List<ProgramState> programStates = controller.getProgramStates();
+
+            ProgramState newState = programStates.stream()
                     .filter(state -> state.getPid() == newValue)
                     .findFirst()
                     .orElse(null);
@@ -102,12 +104,13 @@ public class DebugMenuController {
 
             if (oldValue != null) {
                 removeListenersFromState(
-                        controller.getProgramStates().stream()
+                        programStates.stream()
                                 .filter(state -> state.getPid() == oldValue)
                                 .findFirst()
                                 .orElse(null));
             }
 
+            selectedThreadPidText.setText(newValue.toString());
             addListenersToState(newState);
             updateUIForState(newState);
         });
@@ -115,16 +118,17 @@ public class DebugMenuController {
         pidsList.getSelectionModel().select(0);
     }
 
-    public void executeOneStep(ActionEvent e) {
-        try {
-            controller.executeOneStep();
-        } catch (Exception err) {
+    public void executeOneStep(ActionEvent event) {
+        if (controller.executionHasCompleted()) {
             return;
         }
 
-        List<ProgramState> programStates = controller.getProgramStates();
-        numberOfThreadsText.setText(String.valueOf(programStates.size()));
-        pidsList.setItems(FXCollections.observableArrayList(programStates.stream().map(ProgramState::getPid).toList()));
+        controller.executeOneStep();
+
+        pidsList.setItems(FXCollections.observableArrayList(
+                controller.getProgramStates().stream()
+                        .map(ProgramState::getPid)
+                        .toList()));
     }
 
     private void addListenersToState(ProgramState state) {
@@ -156,17 +160,11 @@ public class DebugMenuController {
             return;
         }
 
-        IExecutionStack executionStack = state.getExecutionStack();
-        ISymbolsTable symbolsTable = state.getSymbolsTable();
-        IFileTable fileTable = state.getFileTable();
-        IHeap heap = state.getHeap();
-        IOutputList output = state.getOutput();
-
-        executionStack.getAll().removeListener(executionStackListener);
-        symbolsTable.getAll().removeListener(symbolsTableListener);
-        output.getAll().removeListener(outputListListener);
-        fileTable.getAll().removeListener(fileTableListener);
-        heap.getAll().removeListener(heapListener);
+        state.getExecutionStack().getAll().removeListener(executionStackListener);
+        state.getSymbolsTable().getAll().removeListener(symbolsTableListener);
+        state.getOutput().getAll().removeListener(outputListListener);
+        state.getFileTable().getAll().removeListener(fileTableListener);
+        state.getHeap().getAll().removeListener(heapListener);
     }
 
     private void updateUIForState(ProgramState state) {
@@ -183,21 +181,12 @@ public class DebugMenuController {
     }
 
     private void updateSymbolsTable(ISymbolsTable symbolsTable) {
-        ObservableList<Map.Entry<String, String>> variableEntries = FXCollections.observableArrayList(
-                symbolsTable.getAll().entrySet().stream()
-                        .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
-                        .collect(Collectors.toList()));
-
-        updateTableView(variablesTable, variableEntries, variableNameColumn, variableValueColumn);
+        updateTableView(variablesTable, tableEntries(symbolsTable.getAll().entrySet()), variableNameColumn,
+                variableValueColumn);
     }
 
     private void updateHeapTable(IHeap heap) {
-        ObservableList<Map.Entry<Integer, String>> heapEntries = FXCollections.observableArrayList(
-                heap.getAll().entrySet().stream()
-                        .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
-                        .collect(Collectors.toList()));
-
-        updateTableView(heapTable, heapEntries, heapAddressColumn, heapValueColumn);
+        updateTableView(heapTable, tableEntries(heap.getAll().entrySet()), heapAddressColumn, heapValueColumn);
     }
 
     private void updateFileList(IFileTable fileTable) {
@@ -206,6 +195,12 @@ public class DebugMenuController {
 
     private void updateOutputList(IOutputList output) {
         updateListView(outputList, output.getAll().stream().map(IValue::toString).toList());
+    }
+
+    private <K, V> ObservableList<Map.Entry<K, String>> tableEntries(Set<Map.Entry<K, V>> entries) {
+        return FXCollections.observableArrayList(entries.stream()
+                .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
+                .collect(Collectors.toList()));
     }
 
     private <T> void updateListView(ListView<T> listView, List<T> items) {

@@ -48,10 +48,12 @@ public class Controller implements IController {
 
     @Override
     public void executeOneStep() {
-        executeGarbageCollector(repository.getProgramThreads());
-        logAll(repository.getProgramThreads());
+        List<ProgramState> programThreads = repository.getProgramThreads();
 
-        List<Callable<ProgramState>> callList = repository.getProgramThreads().stream()
+        executeGarbageCollector(programThreads);
+        logAll(programThreads);
+
+        List<Callable<ProgramState>> callList = programThreads.stream()
                 .map((program) -> (Callable<ProgramState>) (() -> program.oneStep()))
                 .collect(Collectors.toList());
 
@@ -73,10 +75,15 @@ public class Controller implements IController {
             return;
         }
 
-        repository.getProgramThreads().addAll(newProgramThreads);
-        logAll(repository.getProgramThreads());
+        programThreads.addAll(newProgramThreads);
+        logAll(programThreads);
 
-        repository.setProgramThreads(removeCompletedThreads(repository.getProgramThreads()));
+        repository.setProgramThreads(removeCompletedThreads(programThreads));
+    }
+
+    @Override
+    public boolean executionHasCompleted() {
+        return repository.isEmpty();
     }
 
     private Set<Integer> getUnusedAddresses(List<ProgramState> programThreads) {

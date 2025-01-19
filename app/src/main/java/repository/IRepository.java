@@ -7,6 +7,13 @@ import model.states.ProgramState;
 
 public interface IRepository {
     /**
+     * Check wether the repository is empty.
+     *
+     * @return true, if the repository is empty, false otherwise
+     */
+    boolean isEmpty();
+
+    /**
      * Retrieves the list of program threads.
      *
      * @return a list of ProgramState objects representing the current program
