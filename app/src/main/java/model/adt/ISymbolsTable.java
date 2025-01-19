@@ -1,6 +1,5 @@
 package model.adt;
 
-import java.util.Map;
 import java.util.Set;
 
 import exceptions.UndefinedVariableException;

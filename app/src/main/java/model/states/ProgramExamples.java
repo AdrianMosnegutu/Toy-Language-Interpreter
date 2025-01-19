@@ -206,34 +206,10 @@ public final class ProgramExamples {
                                                 new ValueExpression(new IntValue(1)), ArithmeticOperation.ADDITION))),
                                 new RelationalExpression(new VariableExpression("v"),
                                         new ValueExpression(new IntValue(3)), ArithmeticRelation.EQUAL)),
-                        new CompoundStatement(new VariableDeclarationStatement(new IntType(), "x"),
-                                new CompoundStatement(new VariableDeclarationStatement(new IntType(), "y"),
-                                        new CompoundStatement(new VariableDeclarationStatement(new IntType(), "z"),
-                                                new CompoundStatement(
-                                                        new VariableDeclarationStatement(new IntType(), "w"),
-                                                        new CompoundStatement(
-                                                                new AssignStatement("x",
-                                                                        new ValueExpression(new IntValue(1))),
-                                                                new CompoundStatement(
-                                                                        new AssignStatement("y",
-                                                                                new ValueExpression(new IntValue(2))),
-                                                                        new CompoundStatement(
-                                                                                new AssignStatement("z",
-                                                                                        new ValueExpression(
-                                                                                                new IntValue(3))),
-                                                                                new CompoundStatement(
-                                                                                        new AssignStatement("w",
-                                                                                                new ValueExpression(
-                                                                                                        new IntValue(
-                                                                                                                4))),
-                                                                                        new PrintStatement(
-                                                                                                new ArithmeticExpression(
-                                                                                                        new VariableExpression(
-                                                                                                                "v"),
-                                                                                                        new ValueExpression(
-                                                                                                                new IntValue(
-                                                                                                                        10)),
-                                                                                                        ArithmeticOperation.MULTIPLICATION)))))))))))));
+                        new PrintStatement(
+                                new ArithmeticExpression(new VariableExpression("v"),
+                                        new ValueExpression(new IntValue(10)),
+                                        ArithmeticOperation.MULTIPLICATION)))));
     }
 
     public static IStatement forStatementExample() {

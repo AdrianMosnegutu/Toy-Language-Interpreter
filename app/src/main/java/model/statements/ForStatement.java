@@ -47,7 +47,9 @@ public class ForStatement implements IStatement {
 
     @Override
     public Map<String, IType> typecheck(Map<String, IType> typeTable) throws MyException {
+        typeTable.put(innerVariableName, new IntType());
         innerStatement.typecheck(typeTable);
+        typeTable.remove(innerVariableName);
         
         IType startExpressionType = startExpression.typecheck(typeTable);
         IType validExpressionType = validExpression.typecheck(typeTable);

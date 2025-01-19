@@ -89,7 +89,7 @@ public class MainMenuController {
                 ProgramExamples.sleepStatementExample(),
                 ProgramExamples.forkStatementExample()));
 
-        // typecheckExamples();
+        typecheckExamples();
 
         examplesList.setItems(programDescriptions);
 
