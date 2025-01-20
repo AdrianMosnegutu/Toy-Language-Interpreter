@@ -51,30 +51,6 @@ public final class ProgramExamples {
                                         new PrintStatement(new VariableExpression("v"))))));
     }
 
-    public static IStatement switchCaseExample() {
-        return new CompoundStatement(new VariableDeclarationStatement(new IntType(), "a"), new CompoundStatement(
-                new VariableDeclarationStatement(new IntType(), "b"),
-                new CompoundStatement(new VariableDeclarationStatement(new IntType(), "c"), new CompoundStatement(
-                        new AssignStatement("a", new ValueExpression(new IntValue(1))),
-                        new CompoundStatement(new AssignStatement("b", new ValueExpression(new IntValue(2))),
-                                new CompoundStatement(new AssignStatement("c", new ValueExpression(new IntValue(5))),
-                                        new CompoundStatement(new SwitchCaseStatement(
-                                                new ArithmeticExpression(new VariableExpression("a"),
-                                                        new ValueExpression(new IntValue(10)),
-                                                        ArithmeticOperation.MULTIPLICATION),
-                                                new ArithmeticExpression(new VariableExpression("b"),
-                                                        new VariableExpression("c"),
-                                                        ArithmeticOperation.MULTIPLICATION),
-                                                new CompoundStatement(new PrintStatement(new VariableExpression("a")),
-                                                        new PrintStatement(new VariableExpression("b"))),
-                                                new ValueExpression(new IntValue(10)),
-                                                new CompoundStatement(
-                                                        new PrintStatement(new ValueExpression(new IntValue(100))),
-                                                        new PrintStatement(new ValueExpression(new IntValue(200)))),
-                                                new PrintStatement(new ValueExpression(new IntValue(300)))),
-                                                new PrintStatement(new ValueExpression(new IntValue(300))))))))));
-    }
-
     public static IStatement readFromFileExample() {
         return new CompoundStatement(
                 new VariableDeclarationStatement(new StringType(), "varf"),
@@ -188,87 +164,6 @@ public final class ProgramExamples {
                                                                 new ValueExpression(new IntValue(1)),
                                                                 ArithmeticOperation.SUBTRACTION)))),
                                 new PrintStatement(new VariableExpression("v")))));
-    }
-
-    public static IStatement repeatUntilExample() {
-        return new CompoundStatement(new VariableDeclarationStatement(new IntType(), "v"), new CompoundStatement(
-                new AssignStatement("v", new ValueExpression(new IntValue(0))),
-                new CompoundStatement(
-                        new RepeatUntilStatement(
-                                new CompoundStatement(
-                                        new ForkStatement(
-                                                new CompoundStatement(new PrintStatement(new VariableExpression("v")),
-                                                        new AssignStatement("v",
-                                                                new ArithmeticExpression(new VariableExpression("v"),
-                                                                        new ValueExpression(new IntValue(1)),
-                                                                        ArithmeticOperation.SUBTRACTION)))),
-                                        new AssignStatement("v", new ArithmeticExpression(new VariableExpression("v"),
-                                                new ValueExpression(new IntValue(1)), ArithmeticOperation.ADDITION))),
-                                new RelationalExpression(new VariableExpression("v"),
-                                        new ValueExpression(new IntValue(3)), ArithmeticRelation.EQUAL)),
-                        new PrintStatement(
-                                new ArithmeticExpression(new VariableExpression("v"),
-                                        new ValueExpression(new IntValue(10)),
-                                        ArithmeticOperation.MULTIPLICATION)))));
-    }
-
-    public static IStatement forStatementExample() {
-        return new CompoundStatement(
-                new VariableDeclarationStatement(new RefType(new IntType()), "a"),
-                new CompoundStatement(
-                        new AllocateHeapStatement("a", new ValueExpression(new IntValue(20))),
-                        new CompoundStatement(
-                                new ForStatement(
-                                        "v",
-                                        new ValueExpression(new IntValue(0)),
-                                        new ValueExpression(new IntValue(3)),
-                                        new ArithmeticExpression(new VariableExpression("v"),
-                                                new ValueExpression(new IntValue(1)), ArithmeticOperation.ADDITION),
-                                        new ForkStatement(new CompoundStatement(
-                                                new PrintStatement(new VariableExpression("v")),
-                                                new AssignStatement("v",
-                                                        new ArithmeticExpression(new VariableExpression("v"),
-                                                                new ReadHeapExpression(new VariableExpression("a")),
-                                                                ArithmeticOperation.MULTIPLICATION))))),
-                                new PrintStatement(new ReadHeapExpression(new VariableExpression("a"))))));
-    }
-
-    public static IStatement conditionalAssignmentExample() {
-        return new CompoundStatement(
-                new VariableDeclarationStatement(new BoolType(), "b"),
-                new CompoundStatement(
-                        new VariableDeclarationStatement(new IntType(), "c"),
-                        new CompoundStatement(
-                                new AssignStatement("b", new ValueExpression(new BoolValue(true))),
-                                new CompoundStatement(
-                                        new ConditionalAssignmentStatement("c", new VariableExpression("b"),
-                                                new ValueExpression(new IntValue(100)),
-                                                new ValueExpression(new IntValue(200))),
-                                        new CompoundStatement(
-                                                new PrintStatement(new VariableExpression("c")),
-                                                new CompoundStatement(
-                                                        new ConditionalAssignmentStatement("c",
-                                                                new ValueExpression(new BoolValue(false)),
-                                                                new ValueExpression(new IntValue(100)),
-                                                                new ValueExpression(new IntValue(200))),
-                                                        new PrintStatement(new VariableExpression("c"))))))));
-    }
-
-    public static IStatement sleepStatementExample() {
-        return new CompoundStatement(new VariableDeclarationStatement(new IntType(), "v"), new CompoundStatement(
-                new AssignStatement("v", new ValueExpression(new IntValue(10))),
-                new CompoundStatement(
-                        new ForkStatement(new CompoundStatement(
-                                new AssignStatement("v",
-                                        new ArithmeticExpression(new VariableExpression("v"),
-                                                new ValueExpression(new IntValue(1)), ArithmeticOperation.SUBTRACTION)),
-                                new CompoundStatement(
-                                        new AssignStatement("v", new ArithmeticExpression(new VariableExpression("v"),
-                                                new ValueExpression(new IntValue(1)), ArithmeticOperation.SUBTRACTION)),
-                                        new PrintStatement(new VariableExpression("v"))))),
-                        new CompoundStatement(new SleepStatement(new ValueExpression(new IntValue(10))),
-                                new PrintStatement(new ArithmeticExpression(new VariableExpression("v"),
-                                        new ValueExpression(new IntValue(10)), ArithmeticOperation.MULTIPLICATION))))));
     }
 
     public static IStatement forkStatementExample() {

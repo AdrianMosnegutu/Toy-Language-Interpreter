@@ -11,6 +11,12 @@ public class Interpreter extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            System.err.println("Uncaught exception: " + throwable.getMessage());
+            throwable.printStackTrace();
+            System.exit(1);
+        });
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
         Parent root = loader.load();
 

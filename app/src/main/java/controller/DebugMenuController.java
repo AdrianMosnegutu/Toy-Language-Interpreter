@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.BufferedReader;
-import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +23,7 @@ import model.adt.IFileTable;
 import model.adt.IHeap;
 import model.adt.IOutputList;
 import model.adt.ISymbolsTable;
+import model.helpers.Pair;
 import model.statements.IStatement;
 import model.states.ProgramState;
 import model.values.IValue;
@@ -43,22 +43,22 @@ public class DebugMenuController {
     private ListView<String> executionStackList;
 
     @FXML
-    private TableView<Map.Entry<String, String>> variablesTable;
+    private TableView<Pair<String, String>> variablesTable;
 
     @FXML
-    private TableColumn<Map.Entry<String, String>, String> variableNameColumn;
+    private TableColumn<Pair<String, String>, String> variableNameColumn;
 
     @FXML
-    private TableColumn<Map.Entry<String, String>, String> variableValueColumn;
+    private TableColumn<Pair<String, String>, String> variableValueColumn;
 
     @FXML
-    private TableView<Map.Entry<Integer, String>> heapTable;
+    private TableView<Pair<Integer, String>> heapTable;
 
     @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> heapAddressColumn;
+    private TableColumn<Pair<Integer, String>, String> heapAddressColumn;
 
     @FXML
-    private TableColumn<Map.Entry<Integer, String>, String> heapValueColumn;
+    private TableColumn<Pair<Integer, String>, String> heapValueColumn;
 
     @FXML
     private ListView<String> filesList;
@@ -79,9 +79,6 @@ public class DebugMenuController {
     }
 
     public void setProgram(IStatement initialProgram, String logFilePath) {
-        // TODO: Fix removing listeners from previous program state 
-        // TODO: Something's happening with references and deep copies
-
         ProgramState initialState = new ProgramState(initialProgram);
         controller = new Controller(initialState, logFilePath);
 
@@ -210,9 +207,9 @@ public class DebugMenuController {
         updateListView(outputList, output.getAll().stream().map(IValue::toString).toList());
     }
 
-    private <K, V> ObservableList<Map.Entry<K, String>> tableEntries(Set<Map.Entry<K, V>> entries) {
+    private <K, V> ObservableList<Pair<K, String>> tableEntries(Set<Map.Entry<K, V>> entries) {
         return FXCollections.observableArrayList(entries.stream()
-                .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().toString()))
+                .map(entry -> new Pair<>(entry.getKey(), entry.getValue().toString()))
                 .collect(Collectors.toList()));
     }
 
@@ -221,18 +218,18 @@ public class DebugMenuController {
     }
 
     private <K, V> void updateTableView(
-            TableView<Map.Entry<K, V>> tableView,
-            ObservableList<Map.Entry<K, V>> items,
-            TableColumn<Map.Entry<K, V>, String> column1,
-            TableColumn<Map.Entry<K, V>, String> column2) {
+            TableView<Pair<K, V>> tableView,
+            ObservableList<Pair<K, V>> items,
+            TableColumn<Pair<K, V>, String> column1,
+            TableColumn<Pair<K, V>, String> column2) {
         Platform.runLater(() -> {
             tableView.setItems(items);
 
-            column1.setCellValueFactory(new PropertyValueFactory<>("key"));
-            column1.prefWidthProperty().bind(tableView.widthProperty().multiply(0.49666));
+            column1.setCellValueFactory(new PropertyValueFactory<>("first"));
+            column1.prefWidthProperty().bind(tableView.widthProperty().multiply(0.5));
 
-            column2.setCellValueFactory(new PropertyValueFactory<>("value"));
-            column2.prefWidthProperty().bind(tableView.widthProperty().multiply(0.49666));
+            column2.setCellValueFactory(new PropertyValueFactory<>("second"));
+            column2.prefWidthProperty().bind(tableView.widthProperty().multiply(0.5));
         });
     }
 }
