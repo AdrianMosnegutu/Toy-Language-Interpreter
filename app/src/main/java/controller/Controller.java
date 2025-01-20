@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 import exceptions.MyException;
 import exceptions.NullReferenceException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.adt.IHeap;
 import model.states.ProgramState;
 import model.values.IValue;
@@ -118,9 +116,8 @@ public class Controller implements IController {
         }));
     }
 
-    private ObservableList<ProgramState> removeCompletedThreads(List<ProgramState> programThreads) {
-        return FXCollections.observableArrayList(
-                programThreads.stream().filter((thread) -> !thread.isCompleted()).collect(Collectors.toList()));
+    private List<ProgramState> removeCompletedThreads(List<ProgramState> programThreads) {
+        return programThreads.stream().filter((thread) -> !thread.isCompleted()).collect(Collectors.toList());
     }
 
     private void logAll(List<ProgramState> programThreads) {
