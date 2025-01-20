@@ -1,5 +1,7 @@
 package model.states;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import exceptions.EmptyStackException;
 import exceptions.MyException;
 import model.adt.ExecutionStack;
@@ -15,11 +17,7 @@ import model.adt.SymbolsTable;
 import model.statements.IStatement;
 
 public class ProgramState {
-    private static int generatedPid = 0;
-
-    private static synchronized int generatePid() {
-        return ++generatedPid;
-    }
+    private static AtomicInteger basePid = new AtomicInteger(0);
 
     private final IExecutionStack executionStack;
     private final ISymbolsTable symbolsTable;
@@ -38,7 +36,7 @@ public class ProgramState {
         heap = new Heap();
         executionStack.push(initialProgram);
 
-        pid = generatePid();
+        pid = basePid.incrementAndGet();
     }
 
     public ProgramState(ProgramState other, IStatement initialProgram) {
@@ -49,7 +47,7 @@ public class ProgramState {
         this.heap = other.heap;
         executionStack.push(initialProgram);
 
-        pid = generatePid();
+        pid = basePid.incrementAndGet();
     }
 
     public IExecutionStack getExecutionStack() {
