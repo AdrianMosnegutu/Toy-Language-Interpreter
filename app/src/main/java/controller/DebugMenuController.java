@@ -79,6 +79,9 @@ public class DebugMenuController {
     }
 
     public void setProgram(IStatement initialProgram, String logFilePath) {
+        // TODO: Fix removing listeners from previous program state 
+        // TODO: Something's happening with references and deep copies
+
         ProgramState initialState = new ProgramState(initialProgram);
         controller = new Controller(initialState, logFilePath);
 
