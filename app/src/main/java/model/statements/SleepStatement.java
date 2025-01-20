@@ -23,8 +23,8 @@ public class SleepStatement implements IStatement {
         IntValue sleepAmountValue = (IntValue) sleepAmountExpression.evaluate(state.getSymbolsTable(), state.getHeap());
 
         if (sleepAmountValue.getValue() > 0) {
-            state.getExecutionStack()
-                    .push(new SleepStatement(new ValueExpression(new IntValue(sleepAmountValue.getValue() - 1))));
+            state.getExecutionStack().push(
+                    new SleepStatement(new ValueExpression(new IntValue(sleepAmountValue.getValue() - 1))));
         }
 
         return null;
@@ -48,6 +48,6 @@ public class SleepStatement implements IStatement {
 
     @Override
     public String toString() {
-        return String.format("SLEEP(%s);", sleepAmountExpression);
+        return String.format("sleep(%s);", sleepAmountExpression);
     }
 }

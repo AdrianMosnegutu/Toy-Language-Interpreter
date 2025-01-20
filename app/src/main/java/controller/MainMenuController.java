@@ -139,11 +139,12 @@ public class MainMenuController {
         for (int index = 0; index < programStatements.size(); ++index) {
             try {
                 programStatements.get(index).typecheck(new HashMap<>());
+                System.out.println();
+                System.out.println("Type checking passed for example: " + programDescriptions.get(index));
             } catch (MyException e) {
                 System.out.println();
                 System.out.println(String.format("Type error for example '%s'", programDescriptions.get(index)));
                 System.out.println(e);
-                System.out.println();
 
                 programDescriptions.remove(index);
                 programLogFiles.remove(index);

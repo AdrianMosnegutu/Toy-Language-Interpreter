@@ -87,19 +87,23 @@ public class DebugMenuController {
                 controller.getProgramStates().stream().map(ProgramState::getPid).toList()));
 
         pidsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                return;
-            }
-
             List<ProgramState> programStates = controller.getProgramStates();
+            ProgramState newState;
+            Integer selectedPid;
 
-            ProgramState newState = programStates.stream()
-                    .filter(state -> state.getPid() == newValue)
-                    .findFirst()
-                    .orElse(null);
+            if (newValue == null) {
+                if (programStates.isEmpty()) {
+                    return;
+                }
 
-            if (newState == null) {
-                return;
+                newState = programStates.getFirst();
+                selectedPid = newState.getPid();
+            } else {
+                newState = programStates.stream()
+                        .filter(state -> state.getPid() == newValue)
+                        .findFirst()
+                        .orElse(null);
+                selectedPid = newValue;
             }
 
             if (oldValue != null) {
@@ -110,7 +114,9 @@ public class DebugMenuController {
                                 .orElse(null));
             }
 
-            selectedThreadPidText.setText(newValue.toString());
+            selectedThreadPidText.setText(selectedPid.toString());
+            pidsList.getSelectionModel().select(selectedPid);
+
             addListenersToState(newState);
             updateUIForState(newState);
         });
@@ -129,6 +135,10 @@ public class DebugMenuController {
                 controller.getProgramStates().stream()
                         .map(ProgramState::getPid)
                         .toList()));
+
+        if (controller.executionHasCompleted()) {
+            selectedThreadPidText.setText("-");
+        }
     }
 
     private void addListenersToState(ProgramState state) {
