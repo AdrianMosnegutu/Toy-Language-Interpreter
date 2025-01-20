@@ -17,7 +17,7 @@ import model.adt.SymbolsTable;
 import model.statements.IStatement;
 
 public class ProgramState {
-    private static AtomicInteger basePid = new AtomicInteger(0);
+    private static AtomicInteger basePid = new AtomicInteger(1);
 
     private final IExecutionStack executionStack;
     private final ISymbolsTable symbolsTable;
@@ -36,7 +36,7 @@ public class ProgramState {
         heap = new Heap();
         executionStack.push(initialProgram);
 
-        pid = basePid.incrementAndGet();
+        pid = basePid.getAndIncrement();
     }
 
     public ProgramState(ProgramState other, IStatement initialProgram) {
@@ -47,7 +47,7 @@ public class ProgramState {
         this.heap = other.heap;
         executionStack.push(initialProgram);
 
-        pid = basePid.incrementAndGet();
+        pid = basePid.getAndIncrement();
     }
 
     public IExecutionStack getExecutionStack() {
