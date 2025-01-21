@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -6,15 +7,29 @@ import javafx.stage.Stage;
 
 public class Interpreter extends Application {
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            System.err.println("Uncaught exception: " + throwable.getMessage());
+            throwable.printStackTrace();
+
+            Platform.runLater(() -> {
+                Platform.exit();
+                System.exit(1);
+            });
+        });
+
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+        Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
             System.err.println("Uncaught exception: " + throwable.getMessage());
             throwable.printStackTrace();
-            System.exit(1);
+
+            Platform.runLater(() -> {
+                Platform.exit();
+                System.exit(1);
+            });
         });
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));

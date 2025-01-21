@@ -164,6 +164,28 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Label text="Barrier Table">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="barrierTableUI" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="barrierIndexColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="Index" />
+                        <TableColumn fx:id="barrierCounterColumn" editable="false" prefWidth="100.0" text="Counter" />
+                        <TableColumn fx:id="barrierListColumn" prefWidth="75.0" text="Waiting PIDs" />
+                     </columns>
+                  </TableView>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
          </children>
       </GridPane>
       <Button mnemonicParsing="false" onAction="#executeOneStep" text="Execute one step">

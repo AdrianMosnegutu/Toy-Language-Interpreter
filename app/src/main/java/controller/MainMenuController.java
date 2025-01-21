@@ -39,6 +39,8 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         programDescriptions = FXCollections.observableArrayList(
+                "Use a 'cyclic barrier'",
+                "Use the 'repeat until' statement",
                 "Print a value to the console",
                 "Perform arithmetic operations",
                 "Use the 'if' statement",
@@ -51,6 +53,8 @@ public class MainMenuController {
                 "Create a parallel thread");
 
         programLogFiles = new ArrayList<>(Arrays.asList(
+                "cyclicBarrier.log",
+                "repeatUntil.log",
                 "printValue.log",
                 "arithmeticOperations.log",
                 "ifStatement.log",
@@ -63,6 +67,8 @@ public class MainMenuController {
                 "forkStatement.log"));
 
         programStatements = new ArrayList<>(Arrays.asList(
+                ProgramExamples.cyclicBarrierExample(),
+                ProgramExamples.repeatUntilExample(),
                 ProgramExamples.printValueExample(),
                 ProgramExamples.arithmeticOperationsExample(),
                 ProgramExamples.ifStatementExample(),

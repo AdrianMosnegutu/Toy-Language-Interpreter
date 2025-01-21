@@ -18,12 +18,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import model.adt.IBarrierTable;
 import model.adt.IExecutionStack;
 import model.adt.IFileTable;
 import model.adt.IHeap;
 import model.adt.IOutputList;
 import model.adt.ISymbolsTable;
 import model.helpers.Pair;
+import model.helpers.Triplet;
 import model.statements.IStatement;
 import model.states.ProgramState;
 import model.values.IValue;
@@ -66,6 +68,18 @@ public class DebugMenuController {
     @FXML
     private ListView<String> outputList;
 
+    @FXML
+    private TableView<Triplet<Integer, Integer, String>> barrierTableUI;
+
+    @FXML
+    private TableColumn<Triplet<Integer, Integer, String>, Integer> barrierIndexColumn;
+
+    @FXML
+    private TableColumn<Triplet<Integer, Integer, String>, Integer> barrierCounterColumn;
+
+    @FXML
+    private TableColumn<Triplet<Integer, Integer, String>, String> barrierListColumn;
+
     private IController controller;
 
     private WeakListChangeListener<IStatement> executionStackListener;
@@ -73,6 +87,7 @@ public class DebugMenuController {
     private WeakListChangeListener<IValue> outputListListener;
     private WeakMapChangeListener<StringValue, BufferedReader> fileTableListener;
     private WeakMapChangeListener<Integer, IValue> heapListener;
+    private WeakMapChangeListener<Integer, Pair<Integer, List<Integer>>> barrierTableListener;
 
     public void updateProgramDescription(String programDescription) {
         programDescriptionText.setText(programDescription);
@@ -151,18 +166,21 @@ public class DebugMenuController {
         IFileTable fileTable = state.getFileTable();
         IHeap heap = state.getHeap();
         IOutputList output = state.getOutput();
+        IBarrierTable barrierTable = state.getBarrierTable();
 
         executionStackListener = new WeakListChangeListener<>(change -> updateExecutionStackList(executionStack));
         symbolsTableListener = new WeakMapChangeListener<>(change -> updateSymbolsTable(symbolsTable));
         outputListListener = new WeakListChangeListener<>(change -> updateOutputList(output));
         fileTableListener = new WeakMapChangeListener<>(change -> updateFileList(fileTable));
         heapListener = new WeakMapChangeListener<>(change -> updateHeapTable(heap));
+        barrierTableListener = new WeakMapChangeListener<>(change -> updateBarrierTable(barrierTable));
 
         executionStack.getAll().addListener(executionStackListener);
         symbolsTable.getAll().addListener(symbolsTableListener);
         output.getAll().addListener(outputListListener);
         fileTable.getAll().addListener(fileTableListener);
         heap.getAll().addListener(heapListener);
+        barrierTable.getAll().addListener(barrierTableListener);
     }
 
     private void removeListenersFromState(ProgramState state) {
@@ -175,6 +193,7 @@ public class DebugMenuController {
         state.getOutput().getAll().removeListener(outputListListener);
         state.getFileTable().getAll().removeListener(fileTableListener);
         state.getHeap().getAll().removeListener(heapListener);
+        state.getBarrierTable().getAll().removeListener(barrierTableListener);
     }
 
     private void updateUIForState(ProgramState state) {
@@ -183,6 +202,7 @@ public class DebugMenuController {
         updateHeapTable(state.getHeap());
         updateSymbolsTable(state.getSymbolsTable());
         updateFileList(state.getFileTable());
+        updateBarrierTable(state.getBarrierTable());
     }
 
     private void updateExecutionStackList(IExecutionStack executionStack) {
@@ -191,12 +211,12 @@ public class DebugMenuController {
     }
 
     private void updateSymbolsTable(ISymbolsTable symbolsTable) {
-        updateTableView(variablesTable, tableEntries(symbolsTable.getAll().entrySet()), variableNameColumn,
+        updatePairTableView(variablesTable, pairTableEntries(symbolsTable.getAll().entrySet()), variableNameColumn,
                 variableValueColumn);
     }
 
     private void updateHeapTable(IHeap heap) {
-        updateTableView(heapTable, tableEntries(heap.getAll().entrySet()), heapAddressColumn, heapValueColumn);
+        updatePairTableView(heapTable, pairTableEntries(heap.getAll().entrySet()), heapAddressColumn, heapValueColumn);
     }
 
     private void updateFileList(IFileTable fileTable) {
@@ -207,9 +227,22 @@ public class DebugMenuController {
         updateListView(outputList, output.getAll().stream().map(IValue::toString).toList());
     }
 
-    private <K, V> ObservableList<Pair<K, String>> tableEntries(Set<Map.Entry<K, V>> entries) {
+    private void updateBarrierTable(IBarrierTable barrierTable) {
+        updateTripletTableView(barrierTableUI, tripletTableEntries(barrierTable.getAll().entrySet()), barrierIndexColumn,
+                barrierCounterColumn, barrierListColumn);
+    }
+
+    private <K, V> ObservableList<Pair<K, String>> pairTableEntries(Set<Map.Entry<K, V>> entries) {
         return FXCollections.observableArrayList(entries.stream()
                 .map(entry -> new Pair<>(entry.getKey(), entry.getValue().toString()))
+                .collect(Collectors.toList()));
+    }
+
+    private <T1, T2, T3> ObservableList<Triplet<T1, T2, String>> tripletTableEntries(
+            Set<Map.Entry<T1, Pair<T2, List<Integer>>>> entries) {
+        return FXCollections.observableArrayList(entries.stream()
+                .map(entry -> new Triplet<>(entry.getKey(), entry.getValue().getFirst(),
+                        String.join(", ", entry.getValue().getSecond().toString())))
                 .collect(Collectors.toList()));
     }
 
@@ -217,7 +250,7 @@ public class DebugMenuController {
         Platform.runLater(() -> listView.setItems(FXCollections.observableArrayList(items)));
     }
 
-    private <K, V> void updateTableView(
+    private <K, V> void updatePairTableView(
             TableView<Pair<K, V>> tableView,
             ObservableList<Pair<K, V>> items,
             TableColumn<Pair<K, V>, String> column1,
@@ -230,6 +263,26 @@ public class DebugMenuController {
 
             column2.setCellValueFactory(new PropertyValueFactory<>("second"));
             column2.prefWidthProperty().bind(tableView.widthProperty().multiply(0.5));
+        });
+    }
+
+    private <T1, T2, T3> void updateTripletTableView(
+            TableView<Triplet<T1, T2, T3>> tableView,
+            ObservableList<Triplet<T1, T2, T3>> items,
+            TableColumn<Triplet<T1, T2, T3>, T1> column1,
+            TableColumn<Triplet<T1, T2, T3>, T2> column2,
+            TableColumn<Triplet<T1, T2, T3>, T3> column3) {
+        Platform.runLater(() -> {
+            tableView.setItems(items);
+
+            column1.setCellValueFactory(new PropertyValueFactory<>("first"));
+            column1.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25));
+
+            column2.setCellValueFactory(new PropertyValueFactory<>("second"));
+            column2.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25));
+
+            column3.setCellValueFactory(new PropertyValueFactory<>("third"));
+            column3.prefWidthProperty().bind(tableView.widthProperty().multiply(0.5));
         });
     }
 }

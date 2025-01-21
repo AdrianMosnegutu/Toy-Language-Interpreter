@@ -68,13 +68,14 @@ public class Heap implements IHeap {
         builder.append("Heap:\n");
 
         if (map.isEmpty()) {
-            builder.append("    Empty");
+            builder.append("    Empty\n");
             return builder.toString();
         }
 
         builder.append(String.join("\n", map.entrySet().stream()
                 .map((entry) -> "    " + entry.getKey() + " -> " + entry.getValue())
                 .toList()));
+        builder.append("\n");
 
         return builder.toString();
     }

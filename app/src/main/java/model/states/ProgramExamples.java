@@ -7,6 +7,115 @@ import model.types.*;
 import model.values.*;
 
 public final class ProgramExamples {
+    public static IStatement cyclicBarrierExample() {
+        return new CompoundStatement(new VariableDeclarationStatement(new RefType(new IntType()), "v1"),
+                new CompoundStatement(new VariableDeclarationStatement(new RefType(new IntType()), "v2"),
+                        new CompoundStatement(new VariableDeclarationStatement(new RefType(new IntType()), "v3"),
+                                new CompoundStatement(new VariableDeclarationStatement(new IntType(), "cnt"),
+                                        new CompoundStatement(
+                                                new AllocateHeapStatement("v1", new ValueExpression(new IntValue(2))),
+                                                new CompoundStatement(
+                                                        new AllocateHeapStatement("v2",
+                                                                new ValueExpression(new IntValue(3))),
+                                                        new CompoundStatement(
+                                                                new AllocateHeapStatement("v3",
+                                                                        new ValueExpression(new IntValue(4))),
+                                                                new CompoundStatement(
+                                                                        new NewBarrierStatement("cnt",
+                                                                                new ReadHeapExpression(
+                                                                                        new VariableExpression("v2"))),
+                                                                        new CompoundStatement(
+                                                                                new ForkStatement(new CompoundStatement(
+                                                                                        new AwaitStatement(
+                                                                                                new VariableExpression(
+                                                                                                        "cnt")),
+                                                                                        new CompoundStatement(
+                                                                                                new WriteHeapStatement(
+                                                                                                        "v1",
+                                                                                                        new ArithmeticExpression(
+                                                                                                                new ReadHeapExpression(
+                                                                                                                        new VariableExpression(
+                                                                                                                                "v1")),
+                                                                                                                new ValueExpression(
+                                                                                                                        new IntValue(
+                                                                                                                                10)),
+                                                                                                                ArithmeticOperation.MULTIPLICATION)),
+                                                                                                new PrintStatement(
+                                                                                                        new ReadHeapExpression(
+                                                                                                                new VariableExpression(
+                                                                                                                        "v1")))))),
+                                                                                new CompoundStatement(new ForkStatement(
+                                                                                        new CompoundStatement(
+                                                                                                new AwaitStatement(
+                                                                                                        new VariableExpression(
+                                                                                                                "cnt")),
+                                                                                                new CompoundStatement(
+                                                                                                        new WriteHeapStatement(
+                                                                                                                "v2",
+                                                                                                                new ArithmeticExpression(
+                                                                                                                        new ReadHeapExpression(
+                                                                                                                                new VariableExpression(
+                                                                                                                                        "v2")),
+                                                                                                                        new ValueExpression(
+                                                                                                                                new IntValue(
+                                                                                                                                        10)),
+                                                                                                                        ArithmeticOperation.MULTIPLICATION)),
+                                                                                                        new CompoundStatement(
+                                                                                                                new WriteHeapStatement(
+                                                                                                                        "v2",
+                                                                                                                        new ArithmeticExpression(
+                                                                                                                                new ReadHeapExpression(
+                                                                                                                                        new VariableExpression(
+                                                                                                                                                "v2")),
+                                                                                                                                new ValueExpression(
+                                                                                                                                        new IntValue(
+                                                                                                                                                10)),
+                                                                                                                                ArithmeticOperation.MULTIPLICATION)),
+                                                                                                                new PrintStatement(
+                                                                                                                        new ReadHeapExpression(
+                                                                                                                                new VariableExpression(
+                                                                                                                                        "v2"))))))),
+                                                                                        new CompoundStatement(
+                                                                                                new AwaitStatement(
+                                                                                                        new VariableExpression(
+                                                                                                                "cnt")),
+                                                                                                new PrintStatement(
+                                                                                                        new ReadHeapExpression(
+                                                                                                                new VariableExpression(
+                                                                                                                        "v3"))))))))))))));
+    }
+
+    public static IStatement repeatUntilExample() {
+        return new CompoundStatement(new VariableDeclarationStatement(new IntType(), "v"), new CompoundStatement(
+                new VariableDeclarationStatement(new IntType(), "x"),
+                new CompoundStatement(new VariableDeclarationStatement(new IntType(), "y"), new CompoundStatement(
+                        new AssignStatement("v", new ValueExpression(new IntValue(0))),
+                        new CompoundStatement(
+                                new RepeatUntilStatement(
+                                        new CompoundStatement(
+                                                new ForkStatement(new CompoundStatement(
+                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new AssignStatement("v",
+                                                                new ArithmeticExpression(new VariableExpression("v"),
+                                                                        new ValueExpression(new IntValue(1)),
+                                                                        ArithmeticOperation.SUBTRACTION)))),
+                                                new AssignStatement("v",
+                                                        new ArithmeticExpression(new VariableExpression("v"),
+                                                                new ValueExpression(new IntValue(1)),
+                                                                ArithmeticOperation.ADDITION))),
+                                        new RelationalExpression(new VariableExpression("v"),
+                                                new ValueExpression(new IntValue(3)), ArithmeticRelation.EQUAL)),
+                                new CompoundStatement(new AssignStatement("x", new ValueExpression(new IntValue(1))),
+                                        new CompoundStatement(new NOPStatement(),
+                                                new CompoundStatement(
+                                                        new AssignStatement("y", new ValueExpression(new IntValue(3))),
+                                                        new CompoundStatement(new NOPStatement(),
+                                                                new PrintStatement(new ArithmeticExpression(
+                                                                        new VariableExpression("v"),
+                                                                        new ValueExpression(new IntValue(10)),
+                                                                        ArithmeticOperation.MULTIPLICATION)))))))))));
+    }
+
     public static IStatement printValueExample() {
         return new CompoundStatement(
                 new VariableDeclarationStatement(new IntType(), "v"),

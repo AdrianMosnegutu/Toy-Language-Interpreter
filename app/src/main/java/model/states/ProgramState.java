@@ -4,9 +4,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import exceptions.EmptyStackException;
 import exceptions.MyException;
+import model.adt.BarrierTable;
 import model.adt.ExecutionStack;
 import model.adt.FileTable;
 import model.adt.Heap;
+import model.adt.IBarrierTable;
 import model.adt.IExecutionStack;
 import model.adt.IFileTable;
 import model.adt.IHeap;
@@ -22,9 +24,9 @@ public class ProgramState {
     private final IExecutionStack executionStack;
     private final ISymbolsTable symbolsTable;
     private final IOutputList output;
-
     private final IFileTable fileTable;
     private final IHeap heap;
+    private final IBarrierTable barrierTable;
 
     private final int pid;
 
@@ -34,6 +36,7 @@ public class ProgramState {
         output = new OutputList();
         fileTable = new FileTable();
         heap = new Heap();
+        barrierTable = new BarrierTable();
         executionStack.push(initialProgram);
 
         pid = basePid.getAndIncrement();
@@ -41,10 +44,11 @@ public class ProgramState {
 
     public ProgramState(ProgramState other, IStatement initialProgram) {
         executionStack = new ExecutionStack();
-        this.symbolsTable = other.symbolsTable.deepCopy();
-        this.output = other.output;
-        this.fileTable = other.fileTable;
-        this.heap = other.heap;
+        symbolsTable = other.symbolsTable.deepCopy();
+        output = other.output;
+        fileTable = other.fileTable;
+        heap = other.heap;
+        barrierTable = other.barrierTable;
         executionStack.push(initialProgram);
 
         pid = basePid.getAndIncrement();
@@ -68,6 +72,10 @@ public class ProgramState {
 
     public IHeap getHeap() {
         return heap;
+    }
+
+    public IBarrierTable getBarrierTable() {
+        return barrierTable;
     }
 
     public int getPid() {
@@ -97,6 +105,7 @@ public class ProgramState {
         builder.append(output);
         builder.append(fileTable);
         builder.append(heap);
+        builder.append(barrierTable);
 
         builder.append("\n\n");
         for (int i = 0; i < LINE_LENGTH; i++) {
