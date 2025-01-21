@@ -57,7 +57,7 @@ public class DebugMenuController {
     private TableView<Pair<Integer, String>> heapTable;
 
     @FXML
-    private TableColumn<Pair<Integer, String>, String> heapAddressColumn;
+    private TableColumn<Pair<Integer, String>, Integer> heapAddressColumn;
 
     @FXML
     private TableColumn<Pair<Integer, String>, String> heapValueColumn;
@@ -228,7 +228,8 @@ public class DebugMenuController {
     }
 
     private void updateBarrierTable(IBarrierTable barrierTable) {
-        updateTripletTableView(barrierTableUI, tripletTableEntries(barrierTable.getAll().entrySet()), barrierIndexColumn,
+        updateTripletTableView(barrierTableUI, tripletTableEntries(barrierTable.getAll().entrySet()),
+                barrierIndexColumn,
                 barrierCounterColumn, barrierListColumn);
     }
 
@@ -250,11 +251,11 @@ public class DebugMenuController {
         Platform.runLater(() -> listView.setItems(FXCollections.observableArrayList(items)));
     }
 
-    private <K, V> void updatePairTableView(
-            TableView<Pair<K, V>> tableView,
-            ObservableList<Pair<K, V>> items,
-            TableColumn<Pair<K, V>, String> column1,
-            TableColumn<Pair<K, V>, String> column2) {
+    private <T1, T2> void updatePairTableView(
+            TableView<Pair<T1, T2>> tableView,
+            ObservableList<Pair<T1, T2>> items,
+            TableColumn<Pair<T1, T2>, T1> column1,
+            TableColumn<Pair<T1, T2>, T2> column2) {
         Platform.runLater(() -> {
             tableView.setItems(items);
 
