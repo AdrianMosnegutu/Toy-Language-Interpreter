@@ -30,7 +30,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="960.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Selected thread PID:">
+                        <Label text="Selected program ID:">
                            <font>
                               <Font name="Roboto" size="18.0" />
                            </font>
@@ -63,7 +63,7 @@
                   <Insets />
                </opaqueInsets>
                <children>
-                  <Label text="Thread PIDs">
+                  <Label text="Program IDs">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

@@ -39,8 +39,6 @@ public class MainMenuController {
     @FXML
     public void initialize() {
         programDescriptions = FXCollections.observableArrayList(
-                "Use a 'cyclic barrier'",
-                "Use the 'repeat until' statement",
                 "Print a value to the console",
                 "Perform arithmetic operations",
                 "Use the 'if' statement",
@@ -50,11 +48,11 @@ public class MainMenuController {
                 "Write data to the heap",
                 "Use the garbage collector",
                 "Use the 'while' statement",
-                "Create a parallel thread");
+                "Use the 'repeat until' statement",
+                "Create a parallel process",
+                "Use a barrier synchronization mechanism");
 
         programLogFiles = new ArrayList<>(Arrays.asList(
-                "cyclicBarrier.log",
-                "repeatUntil.log",
                 "printValue.log",
                 "arithmeticOperations.log",
                 "ifStatement.log",
@@ -64,11 +62,11 @@ public class MainMenuController {
                 "writeHeap.log",
                 "garbageCollector.log",
                 "whileStatement.log",
-                "forkStatement.log"));
+                "repeatUntil.log",
+                "forkStatement.log",
+                "barrier.log"));
 
         programStatements = new ArrayList<>(Arrays.asList(
-                ProgramExamples.cyclicBarrierExample(),
-                ProgramExamples.repeatUntilExample(),
                 ProgramExamples.printValueExample(),
                 ProgramExamples.arithmeticOperationsExample(),
                 ProgramExamples.ifStatementExample(),
@@ -78,7 +76,9 @@ public class MainMenuController {
                 ProgramExamples.writeToHeapExample(),
                 ProgramExamples.garbageCollectorExample(),
                 ProgramExamples.whileStatementExample(),
-                ProgramExamples.forkStatementExample()));
+                ProgramExamples.forkStatementExample(),
+                ProgramExamples.repeatUntilExample(),
+                ProgramExamples.cyclicBarrierExample()));
 
         typecheckExamples();
 

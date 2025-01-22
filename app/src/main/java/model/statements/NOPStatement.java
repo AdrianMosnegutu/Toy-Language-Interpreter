@@ -24,6 +24,6 @@ public class NOPStatement implements IStatement {
 
     @Override
     public String toString() {
-        return "pass";
+        return "pass;";
     }
 }
